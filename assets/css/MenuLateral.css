@@ -1,0 +1,121 @@
+:root{
+  --color-background: #f6f6f9;
+  --color-info-dark: #7d8da1;
+  --color-dark: #363949;
+  --color-light: rgba(132, 139, 200, 0.18);
+  --color-dark-variant: #677483;
+
+}
+
+/* Menu Lateral */
+nav.menu-lateral {
+  width: 65px;
+  height: 100%;
+  background-color: var(--color-dark);
+  padding: 40px 0 40px 1%;
+  box-shadow: 3px 0 0 var(--color-info-dark);
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  transition: width 0.4s, box-shadow 0.4s;
+}
+
+nav.menu-lateral.expandir {
+  width: 250px;
+  box-shadow: 5px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Botão de expandir para notebooks */
+.btn-expandir-note {
+  display: block;
+  position: absolute;
+  top: 20px;
+  left: 1.5%;
+  z-index: 1000;
+  cursor: pointer;
+  font-size: 24px;
+  color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+  .btn-expandir-note {
+    display: none;
+  }
+
+  .btn-expandir {
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 11000; 
+    cursor: pointer;
+    font-size: 24px;
+  }
+
+  nav.menu-lateral {
+    display: none;
+  }
+
+  nav.menu-lateral.expandir {
+    width: 43%;
+    max-width: 300px;
+    display: block;
+    z-index: 10000;
+    position: fixed;
+  }
+
+  .txt-link {
+    visibility: hidden;
+    width: 0;
+    overflow: hidden;
+  }
+
+  nav.menu-lateral.expandir .txt-link {
+    visibility: visible;
+    width: auto;
+    overflow: visible;
+  }
+}
+
+ul {
+  height: 100%;
+  list-style-type: none;
+  padding-inline-start: 0px;
+}
+
+ul li.item-menu {
+  transition: 0.5s;
+}
+
+ul li.active {
+  background-color: #166af1;
+}
+
+ul li.item-menu:hover {
+  background: #166af1;
+}
+
+ul li.item-menu a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 5px 4%;
+  display: flex;
+  line-height: 40px;
+  margin-top: 10px;
+}
+
+ul li.item-menu a .txt-link {
+  margin-left: 40px;
+  transition: 0.7s;
+}
+
+nav.menu-lateral.expandir .txt-link {
+  margin-left: 20px;
+  display: block;
+}
+
+ul li.item-menu a .icon > i {
+  font-size: 30px;
+}

@@ -1,0 +1,244 @@
+
+:root{
+    --color-background: #f6f6f9;
+    --color-info-dark: #7d8da1;
+    --color-dark: #363949;
+    --color-light: rgba(132, 139, 200, 0.18);
+    --color-dark-variant: #677483;
+
+}
+
+
+aside {
+    display: flex; /* Torna o aside um container flexível */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    width: 100%; /* Garante que o aside ocupe 100% da largura */
+    margin-left: 5.5%;
+    background-color: var(--color-info-dark);
+}
+
+img {
+    width: 80px;
+    height: 80px;
+}
+
+.logo {
+    display: flex; /* Torna a div.logo um container flexível */
+    align-items: center; /* Centraliza os itens verticalmente */
+    gap: 10px; /* Espaçamento entre o logo e o texto */
+}
+
+.logo-texto h3 {
+    margin: 0; /* Remove margens padrão do título */
+    color: #fff; /* Cor do texto para contraste */
+}
+
+.logo-texto h3 span {
+    color: #54382b; /* Cor personalizada para o destaque */
+}
+
+
+@media screen and (max-width: 768px){
+    aside{
+        margin-left: 0;
+    }
+}
+
+
+/* Centraliza o conteúdo na tela */
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+/* Centraliza a div .conteudo sem afetar o body */
+.conteudo {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    padding: 20px; /* Adiciona espaçamento interno para telas pequenas */
+}
+
+.quadro {
+    background-color: #ffffff; /* Fundo branco */
+    border-radius: 20px; /* Bordas arredondadas */
+    padding: 40px; /* Espaçamento interno */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    max-width: 400px; /* Largura máxima do quadro */
+    width: 100%; /* Garante que ocupe 100% da largura disponível */
+    box-sizing: border-box; /* Inclui o padding na largura */
+}
+
+/* Estilização dos campos de entrada e rótulos */
+.box-user {
+    position: relative;
+    margin-bottom: 20px; /* Espaço entre os campos */
+}
+
+.box-user input {
+    width: 90%;
+    padding: 12px;
+    border: 2px solid #ddd; /* Borda inicial */
+    border-radius: 10px; /* Arredonda os campos */
+    font-size: 16px;
+    outline: none; /* Remove o contorno padrão ao focar */
+    transition: all 0.3s; /* Transição suave */
+}
+
+/* Foco nos campos de entrada */
+.box-user input:focus {
+    border-color: var(--color-info-dark); /* Cor de destaque */
+    box-shadow: 0 0 8px rgba(59, 127, 237, 0.5); /* Sombra no foco */
+}
+
+/* Estilização dos rótulos */
+.box-user label {
+    position: absolute;
+    left: 15px;
+    top: 14px;
+    color: #aaa;
+    font-size: 14px;
+    pointer-events: none;
+    transition: all 0.3s; /* Transição suave */
+}
+
+/* Quando o campo é preenchido ou focado */
+.box-user input:focus + label,
+.box-user input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 10px;
+    font-size: 12px;
+    color: var(--color-dark-variant);
+    background-color: #fff; /* Fundo branco para destacar o rótulo */
+    padding: 0 5px;
+}
+
+/* Botão para enviar (opcional) */
+form button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--color-info-dark);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: var(--color-dark-variant);
+}
+
+/* Responsividade */
+@media screen and (max-width: 768px) {
+    .conteudo{
+        padding: 10px 0;
+    }
+    .quadro {
+        padding: 30px; /* Reduz o espaçamento interno para telas menores */
+        max-width: 90%; /* Aumenta a largura para ocupar mais espaço */
+    }
+
+    .box-user input {
+        font-size: 14px; /* Ajusta o tamanho da fonte em dispositivos menores */
+        padding: 10px; /* Reduz o espaçamento interno */
+    }
+
+    .box-user label {
+        font-size: 13px; /* Ajusta o tamanho do rótulo */
+    }
+
+    .conteudo, .quadro {
+        position: relative;
+        z-index: 1;
+      }
+      
+
+    form button {
+        font-size: 14px; /* Ajusta o tamanho do texto do botão */
+        padding: 10px; /* Reduz o espaçamento do botão */
+    }
+}
+
+
+.dropdown {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    width: 100%;
+    z-index: 1000;
+    display: none; /* Escondido por padrão */
+    max-height: 200px; /* Limita a altura */
+    overflow-y: auto; /* Adiciona rolagem para muitos itens */
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+}
+
+.dropdown-item:hover {
+    background: #f0f0f0;
+    color: #000;
+}
+
+/* Estilo geral para o select */
+.box-user select {
+    width: 100%; /* Para ocupar toda a largura disponível */
+    padding: 10px 15px;
+    border-radius: 5px; /* Bordas arredondadas */
+    border: 1px solid #ccc; /* Borda suave */
+    background-color: #fff; /* Cor de fundo */
+    font-size: 16px; /* Tamanho da fonte */
+    color: #333; /* Cor do texto */
+    box-sizing: border-box; /* Inclui o padding na largura total */
+    appearance: none; /* Remove o estilo padrão do select */
+    cursor: pointer; /* Muda o cursor ao passar por cima */
+    transition: border-color 0.3s ease; /* Transição suave para borda */
+}
+
+/* Estilo para quando o select está em foco */
+.box-user select:focus {
+    border-color: #166af1; /* Cor da borda ao focar */
+    outline: none; /* Remove o contorno padrão do navegador */
+}
+
+/* Estilo para o ícone do dropdown */
+.box-user select::-ms-expand {
+    display: none; /* Esconde o ícone padrão no Internet Explorer */
+}
+
+/* Estilo para a opção desabilitada (placeholder) */
+.box-user select option:disabled {
+    color: #aaa; /* Cor mais suave para o placeholder */
+}
+
+/* Estilo do hover nas opções */
+.box-user select option:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.divisoria-produto {
+    border: none;
+    border-top: 2px solid #000; /* Linha cinza */
+    margin: 20px 0; /* Espaçamento antes e depois da linha */
+}
+
+/* Estilo do título para os produtos */
+
+h5{
+    font-size: 16px;
+}
+
+select {
+    pointer-events: auto;
+}

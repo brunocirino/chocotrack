@@ -1,0 +1,219 @@
+:root {
+    --card-width: 60%; /* A largura será 100% da tela */
+    --card-padding: 20px; /* Padding interno do card */
+    --card-border-radius: 10px; /* Raio da borda */
+    --barra-altura: 8px; /* Altura da barra de progresso */
+    --color-background: #f6f6f9;
+    --color-info-dark: #7d8da1;
+    --color-dark: #363949;
+    --color-light: rgba(132, 139, 200, 0.18);
+    --color-dark-variant: #677483;
+    --color-marron-claro: #894818;
+    --color-marron-escuro: #2f1107;
+
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.conteudo {
+    display: flex;
+    flex-direction: column; /* Cards empilhados um embaixo do outro */
+    gap: 20px; /* Espaçamento entre os cards */
+    top: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+    box-shadow: 0 14px 16px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    width: var(--card-width); /* Controlando a largura do card */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; /* Alinha o conteúdo verticalmente */
+    justify-content: flex-start; /* Ajusta o conteúdo */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h4 {
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.card p {
+    margin: 0 0 10px;
+    color: #666;
+}
+
+.itens-pedido {
+    padding-left: 0;
+    margin-top: 10px;
+    list-style-type: none;
+}
+
+.itens-pedido li {
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Alinha os itens e o checkbox */
+    padding: 8px;
+    border-radius: 6px;
+    background: #f9f9f9;
+    transition: background 0.3s ease;
+}
+
+.itens-pedido li:hover {
+    background: #f1f1f1;
+}
+
+.icone-item {
+    font-size: 18px;
+    margin-right: 8px;
+    color: #4caf50;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.2s;
+}
+
+.checkbox.checked {
+    background: #4caf50;
+    color: white;
+    border-color: #4caf50;
+    transform: scale(1.1);
+}
+
+.checkbox.checked::after {
+    content: "✔";
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
+
+.div-barra{
+    display: flex;
+    align-items: center;
+}
+
+.barra-concluida {
+    background: #e0e0e0;
+    width: 95%;
+    height: var(--barra-altura);
+    border-radius: 4px;
+    display: flex; /* Usando flexbox para alinhar a barra e a porcentagem */
+    align-items: center; /* Alinha a barra verticalmente com a porcentagem */
+    justify-content: space-between; /* Espaça a barra e a porcentagem */
+    position: relative;
+}
+
+.barra-concluida-status {
+    background: #4caf50;
+    height: 100%;
+    border-radius: 4px;
+}
+
+.percentagem-container {
+    padding: 5px;
+    right: 10px; /* Posiciona a porcentagem à direita da barra */
+    color: #333;
+    font-size: 14px;
+}
+
+
+.percentagem {
+    font-size: 14px;
+    color: #333;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-conteudo {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 60%;
+    max-width: 600px;
+    position: relative;
+}
+
+.fechar-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+}
+
+button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+
+
+
+/* Responsividade para telas pequenas */
+@media screen and (max-width: 768px) {
+    :root {
+        --card-width: 60%; /* A largura dos cards será 100% para telas pequenas */
+    }
+
+    .card {
+        width: var(--card-width);
+    }
+
+    .conteudo {
+        gap: 10px;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    :root {
+        --card-width: 70%; /* Ajuste para telas ainda menores */
+    }
+
+    .card {
+        width: var(--card-width);
+    }
+}
