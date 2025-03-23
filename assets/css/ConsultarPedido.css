@@ -242,3 +242,50 @@ h5{
 select {
     pointer-events: auto;
 }
+
+.status-select {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+    transition: 0.3s;
+}
+
+/* Altera a cor do select ao passar o mouse */
+.status-select:hover {
+    border-color: #888;
+}
+
+/* Altera a aparência ao focar no select */
+.status-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Ajusta a largura para não ficar muito grande dentro do card */
+.status-select {
+    width: 100%;
+    max-width: 150px;
+}
+
+/* Estiliza as opções do select */
+.status-select option {
+    background: #fff;
+    color: #333;
+}
+
+/* Personaliza o select dependendo do status selecionado */
+.status-select option[value="Pendente"] {
+    color: #d9534f;
+}
+
+.status-select option[value="Em andamento"] {
+    color: #f0ad4e;
+}
+
+.status-select option[value="Concluído"] {
+    color: #5cb85c;
+}
