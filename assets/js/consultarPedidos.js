@@ -1,14 +1,41 @@
 const pedidos = [];
 
-function adicionarPedido(id, nome, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso) {
-    // Adiciona o pedido ao array de pedidos
-    pedidos.push({ id, nome, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso });
+function adicionarPedido(id, nome, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso, 
+    status_ovostradicionais, status_ovosrecheados, status_caixabombom, status_ovoscolher) {
+// Adiciona o pedido ao array de pedidos com todos os status
+pedidos.push({ 
+id, 
+nome, 
+itens, 
+id_ovostradicionais, 
+id_ovosrecheados, 
+id_caixabombom, 
+id_ovoscolher, 
+progresso,
+status_ovostradicionais,
+status_ovosrecheados,
+status_caixabombom,
+status_ovoscolher
+});
 
-    const listaPedidos = document.getElementById('lista-pedidos');
+const listaPedidos = document.getElementById('lista-pedidos');
 
-    // Gera o card do pedido, passando todos os parâmetros necessários
-    const novoPedido = gerarCard({ id, nome, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso });
-    listaPedidos.innerHTML += novoPedido;
+// Gera o card do pedido passando todos os parâmetros
+const novoPedido = gerarCard({ 
+id, 
+nome, 
+itens, 
+id_ovostradicionais, 
+id_ovosrecheados, 
+id_caixabombom, 
+id_ovoscolher, 
+progresso,
+status_ovostradicionais,
+status_ovosrecheados,
+status_caixabombom,
+status_ovoscolher
+});
+listaPedidos.innerHTML += novoPedido;
 }
 
 
@@ -106,7 +133,7 @@ function InsertArray(arrayPedidos) {
     resultado.forEach(grupo => {
         const idIdentificador = grupo.id_identificador;
         const item = grupo.item;
-        console.log(grupo)
+
 
         if (item === "Tradicional") {
             CarregarTradicionais(idIdentificador);
@@ -139,50 +166,83 @@ function InsertArray(arrayPedidos) {
 function gerarCard(pedido) {
     const statusOptions = ['Pendente', 'Em andamento', 'Concluído'];
 
-    // Objeto que mapeia cada item ao seu array de IDs correspondente
-    const itemIds = {
-        "Tradicional": pedido.id_ovostradicionais || [],
-        "Tradicional recheado": pedido.id_ovosrecheados || [],
-        "Caixa de bombom": pedido.id_caixabombom || [],
-        "Ovo de colher": pedido.id_ovoscolher || []
+    // Função para garantir que os dados sejam arrays válidos
+    const ensureArray = (data) => {
+        if (data === null || data === undefined) return [];
+        if (Array.isArray(data)) return data;
+        if (typeof data === 'string' && data.includes(',')) return data.split(',').map(item => item.trim());
+        return [data];
     };
 
-    // Objeto que mapeia cada item ao seu array de status correspondente
-    const itemStatus = {
-        "Tradicional": pedido.status_ovostradicionais || [],
-        "Tradicional recheado": pedido.status_ovosrecheados || [],
-        "Caixa de bombom": pedido.status_caixabombom || [],
-        "Ovo de colher": pedido.status_ovoscolher || []
+    // Normaliza os dados do pedido
+    const normalizedPedido = {
+        ...pedido,
+        itens: ensureArray(pedido.itens),
+        id_ovostradicionais: ensureArray(pedido.id_ovostradicionais),
+        status_ovostradicionais: ensureArray(pedido.status_ovostradicionais),
+        id_ovosrecheados: ensureArray(pedido.id_ovosrecheados),
+        status_ovosrecheados: ensureArray(pedido.status_ovosrecheados),
+        id_caixabombom: ensureArray(pedido.id_caixabombom),
+        status_caixabombom: ensureArray(pedido.status_caixabombom),
+        id_ovoscolher: ensureArray(pedido.id_ovoscolher),
+        status_ovoscolher: ensureArray(pedido.status_ovoscolher)
     };
 
-    // Contadores para controlar o índice de cada tipo de item
+    // Objeto que organiza os dados por tipo de item
+    const itemData = {
+        "Tradicional": {
+            ids: normalizedPedido.id_ovostradicionais,
+            status: normalizedPedido.status_ovostradicionais
+        },
+        "Tradicional recheado": {
+            ids: normalizedPedido.id_ovosrecheados,
+            status: normalizedPedido.status_ovosrecheados
+        },
+        "Caixa de bombom": {
+            ids: normalizedPedido.id_caixabombom,
+            status: normalizedPedido.status_caixabombom
+        },
+        "Colher": {
+            ids: normalizedPedido.id_ovoscolher,
+            status: normalizedPedido.status_ovoscolher
+        }
+    };
+
+    // Contadores para cada tipo de item
     const contadores = {
         "Tradicional": 0,
         "Tradicional recheado": 0,
         "Caixa de bombom": 0,
-        "Ovo de colher": 0
+        "Colher": 0
     };
 
-    // Gera a lista de itens com os IDs e status corretos
-    const listaItens = pedido.itens.map(item => {
-        const ids = itemIds[item] || []; // Obtém os IDs do item
-        const status = itemStatus[item] || []; // Obtém os status do item
-        const itemId = ids[contadores[item]] || null; // Obtém o ID correspondente ao contador do item
-        const itemStatusAtual = status[contadores[item]] || 'Pendente'; // Obtém o status correspondente ao contador do item
-
+    // Gera a lista de itens
+    const listaItens = normalizedPedido.itens.map(item => {
+        const data = itemData[item] || { ids: [], status: [] };
+        const itemId = data.ids[contadores[item]] || null;
+        const itemStatus = (data.status[contadores[item]] || 'Pendente').trim();
+        
         // Log para depuração
-        console.log(`Item: ${item}, ID: ${itemId}, Status: ${itemStatusAtual}, IDs: ${ids}, Statuses: ${status}`);
+        console.log(`Item: ${item}`, {
+            id: itemId,
+            status: itemStatus,
+            idsDisponiveis: data.ids,
+            statusDisponiveis: data.status
+        });
 
-        // Incrementa o contador para o próximo item do mesmo tipo
         contadores[item]++;
 
         return `
             <li>
                 <span class="icone-item">⮞</span> ${item}
-                <select class="status-select" data-item-id="${itemId}" data-itens='${JSON.stringify(pedido.itens)}' onchange="atualizarStatus(this, ${pedido.id})">
-                    ${statusOptions.map(optionStatus => `
-                        <option value="${pedido.status_ovostradicionais}" ${optionStatus.toLowerCase() === itemStatusAtual.toLowerCase() ? 'selected' : ''}>
-                            ${optionStatus}
+                <select class="status-select" 
+                        data-item-id="${itemId}"
+                        data-pedido-id="${normalizedPedido.id}"
+                        data-itens='${JSON.stringify(normalizedPedido.itens)}'
+                        onchange="atualizarStatus(this)">
+                    ${statusOptions.map(option => `
+                        <option value="${option}" ${option.toLowerCase() === itemStatus.toLowerCase() ? 'selected' : ''}>
+                            ${option}
                         </option>
                     `).join('')}
                 </select>
@@ -191,9 +251,9 @@ function gerarCard(pedido) {
     }).join('');
 
     return `
-        <div class="card" onclick="(${pedido.id})">
-            <h4>Pedido #${pedido.id}</h4>
-            <p>Nome: ${pedido.nome}</p>
+        <div class="card" data-pedido-id="${normalizedPedido.id}">
+            <h4>Pedido #${normalizedPedido.id}</h4>
+            <p>Nome: ${normalizedPedido.nome}</p>
             <ul class="itens-pedido">
                 ${listaItens}  
             </ul>
@@ -201,30 +261,43 @@ function gerarCard(pedido) {
     `;
 }
 
-function atualizarStatus(selectElement, pedidoId) {
+function atualizarStatus(selectElement) {
     const novoStatus = selectElement.value;
-    const itemId = selectElement.dataset.itemId; // Captura o ID do item
-    const itens = JSON.parse(selectElement.dataset.itens); // Captura a lista de itens
+    const itemId = selectElement.dataset.itemId;
+    const pedidoId = selectElement.dataset.pedidoId;
+    const itens = JSON.parse(selectElement.dataset.itens || '[]');
 
-    console.log(`Pedido ${pedidoId}, Item ${itemId} atualizado para: ${novoStatus}, Itens: ${itens}`);
+    console.log('Dados enviados para atualização:', {
+        pedidoId,
+        itemId,
+        novoStatus,
+        itens
+    });
 
-    $.ajax({
-        url: '../controller/Post_StatusPedido.php', 
-        method: 'GET',
-        data: { 
-            Status: novoStatus, 
-            ID: pedidoId, 
-            ItemID: itemId, // Passa o ID do item
-            Itens: itens 
-        },
-        success: function(response) {
-            console.log('Requisição AJAX bem sucedida:', response);
-            return response;
-        },
-        error: function(xhr, status, error) {
-            console.error('Erro na requisição AJAX:', error);
-            console.error('Resposta do servidor:', xhr.responseText);
+    // Cria um FormData para enviar como POST tradicional
+    const formData = new FormData();
+    formData.append('Status', novoStatus);
+    formData.append('ID', pedidoId);
+    formData.append('ItemID', itemId);
+    formData.append('Itens', JSON.stringify(itens));
+
+    fetch('../controller/Post_StatusPedido.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Resposta:', data);
+        if (data.success) {
+        } else {
+            alert('Erro: ' + data.message);
+            selectElement.value = selectElement.dataset.lastStatus;
         }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        selectElement.value = selectElement.dataset.lastStatus;
+        alert('Erro na conexão');
     });
 }
 
@@ -263,8 +336,20 @@ function CarregarPedidos() {
             
             if (Array.isArray(response) && response.length > 0) {
                 response.forEach(pedido => {
-                    adicionarPedido(pedido.id, pedido.nome, pedido.itens, pedido.id_ovostradicionais, pedido.id_ovosrecheados, pedido.id_caixabombom, pedido.id_ovoscolher, 0);
-                });
+                    adicionarPedido(
+                        pedido.id, 
+                        pedido.nome, 
+                        pedido.itens, 
+                        pedido.id_ovostradicionais, 
+                        pedido.id_ovosrecheados, 
+                        pedido.id_caixabombom, 
+                        pedido.id_ovoscolher, 
+                        0,
+                        pedido.status_ovostradicionais,
+                        pedido.status_ovosrecheados,
+                        pedido.status_caixabombom,
+                        pedido.status_ovoscolher
+                    );                });
 
                 console.log('Pedidos carregados:', pedidos);
             } else {

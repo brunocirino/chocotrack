@@ -2,76 +2,70 @@
 header('Content-Type: application/json');
 require_once("../model/PedidoDAO.php");
 
-// Captura os dados da requisição
-$status = $_GET['Status'] ?? null;
-$pedidoId = $_GET['ID'] ?? null;
-$itemId = $_GET['ItemID'] ?? null;
-$itensJson = $_GET['Itens'] ?? '[]'; // Se não existir, assume um JSON vazio
+// Habilita logs detalhados
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-// Se $itensJson for um array, converte para JSON
-if (is_array($itensJson)) {
-    $itensJson = json_encode($itensJson);
-}
+// Arquivo de log
+$logFile = 'C:\\Users\\bruno\\OneDrive\\Área de Trabalho\\Log_Erro_TCC\\status_log.txt';
 
-// Decodificar Itens (de JSON para array)
-$itens = json_decode($itensJson, true);
-if (json_last_error() !== JSON_ERROR_NONE) {
-    // Se houver erro na decodificação, loga o erro e define $itens como array vazio
-    logError("Erro ao decodificar JSON de Itens: " . json_last_error_msg());
-    $itens = [];
-}
+// Captura os dados (usando POST tradicional)
+$status = $_POST['Status'] ?? null;
+$pedidoId = $_POST['ID'] ?? null;
+$itemId = $_POST['ItemID'] ?? null;
+$itens = json_decode($_POST['Itens'] ?? '[]', true) ?? [];
 
-// Caminho do log de erros
-$logFile = 'C:\\Users\\bruno\\OneDrive\\Área de Trabalho\\Log_Erro_TCC\\Log_Erro_TCC.txt';
-
-// Registrar logs para depuração
-logError("Status: $status");
-logError("Pedido ID: $pedidoId");
-logError("Item ID: $itemId");
-logError("Itens: " . json_encode($itens));
+// Log inicial
+file_put_contents($logFile, "\n[".date('Y-m-d H:i:s')."] INICIO - Pedido: $pedidoId, Item: $itemId\n", FILE_APPEND);
+file_put_contents($logFile, "Dados recebidos: ".print_r($_POST, true)."\n", FILE_APPEND);
 
 try {
-    // Verifica se todos os parâmetros necessários foram fornecidos
+    // Verificação básica
     if (empty($status) || empty($pedidoId) || empty($itemId)) {
-        throw new Exception("Parâmetros inválidos na requisição.");
+        throw new Exception("Status, ID ou ItemID faltando");
     }
 
-    // Determina o tipo do item com base no índice do ItemID
-    $tipoItem = '';
-    if (isset($itens[0]) && $itens[0] === 'Tradicional') {
-        $tipoItem = 'Tradicional';
-    } elseif (isset($itens[1]) && $itens[1] === 'Tradicional recheado') {
-        $tipoItem = 'Tradicional recheado';
-    } elseif (isset($itens[2]) && $itens[2] === 'Caixa de bombom') {
-        $tipoItem = 'Caixa de bombom';
-    } elseif (isset($itens[3]) && $itens[3] === 'Ovo de colher') {
-        $tipoItem = 'Ovo de colher';
-    } else {
-        throw new Exception("Tipo de item não encontrado para o ID: $itemId");
-    }
-
-    // Criar instância do DAO
     $PedidosDAO = new PedidoModel();
+    
+    // Log antes da atualização
+    file_put_contents($logFile, "Antes de atualizar - Status: $status, Pedido: $pedidoId, Item: $itemId\n", FILE_APPEND);
+    
+    // Determina o tipo do item de forma simples
+    $tipoItem = '';
+    if (in_array('Tradicional', $itens)) {
+        $tipoItem = 'Tradicional';
+    } elseif (in_array('Tradicional recheado', $itens)) {
+        $tipoItem = 'Tradicional recheado';
+    } elseif (in_array('Caixa de bombom', $itens)) {
+        $tipoItem = 'Caixa de bombom';
+    } elseif (in_array('Colher', $itens)) {
+        $tipoItem = 'Colher';
+    }
+    
+    if (empty($tipoItem)) {
+        throw new Exception("Tipo de item não identificado");
+    }
 
-    // Atualiza o status do item
-    $resultado = $PedidosDAO->atualizarStatusItem($tipoItem, $itemId, $status, $pedidoId);
-
+    // Log do tipo determinado
+    file_put_contents($logFile, "Tipo determinado: $tipoItem\n", FILE_APPEND);
+    
+    // Atualiza no banco
+    $resultado = $PedidosDAO->atualizarStatusItem( $itemId, $status, $pedidoId);
+    
+    // Log após atualização
+    file_put_contents($logFile, "Resultado da atualização: ".($resultado ? 'SUCESSO' : 'FALHA')."\n", FILE_APPEND);
+    
     if ($resultado) {
-        // Retorna uma resposta de sucesso
+        // Verificação extra - consulta o status atual no banco
+        $statusAtual = $PedidosDAO->verificarStatusAtual($tipoItem, $itemId, $pedidoId);
+        file_put_contents($logFile, "Status confirmado no banco: ".$statusAtual."\n", FILE_APPEND);
+        
         echo json_encode(['success' => true, 'message' => 'Status atualizado com sucesso']);
     } else {
-        throw new Exception("Erro ao atualizar o status do item.");
+        throw new Exception("Falha ao executar atualização no banco");
     }
 } catch (Exception $e) {
-    // Loga o erro e retorna uma resposta de erro
-    logError("Erro: " . $e->getMessage());
+    file_put_contents($logFile, "ERRO: ".$e->getMessage()."\n", FILE_APPEND);
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-}
-
-// Função para registrar logs de erro
-function logError($message) {
-    global $logFile;
-    $timestamp = date('Y-m-d H:i:s');
-    file_put_contents($logFile, "[$timestamp] $message" . PHP_EOL, FILE_APPEND);
 }
 ?>

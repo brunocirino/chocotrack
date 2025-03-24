@@ -178,41 +178,77 @@ class PedidoModel {
         return false;
     }
 
-    public function atualizarStatusItem($tipoItem, $itemId, $novoStatus, $pedidoId) {
-        // Define a tabela correta com base no tipo do item
-        $tabela = '';
-        switch ($tipoItem) {
-            case 'Tradicional':
-                $tabela = 'ovostradicionais';
-                break;
-            case 'Tradicional recheado':
-                $tabela = 'ovosrecheados';
-                break;
-            case 'Caixa de bombom':
-                $tabela = 'caixabombom';
-                break;
-            case 'Ovo de colher':
-                $tabela = 'ovoscolher';
-                break;
-            default:
-                throw new Exception("Tipo de item inválido: $tipoItem");
+    public function atualizarStatusItem($itemId, $novoStatus, $pedidoId) {
+        // Define as tabelas possíveis
+        $tabelas = ['ovostradicionais', 'ovosrecheados', 'caixabombom', 'ovoscolher'];
+        
+        foreach ($tabelas as $tabela) {
+            // Verifica se o item existe nesta tabela
+            $sqlVerifica = "SELECT id FROM $tabela WHERE id_pedido = :id_pedido AND id = :itemId";
+            $stmtVerifica = $this->banco->prepare($sqlVerifica);
+            $stmtVerifica->bindParam(':id_pedido', $pedidoId, PDO::PARAM_INT);
+            $stmtVerifica->bindParam(':itemId', $itemId, PDO::PARAM_INT);
+            
+            if ($stmtVerifica->execute()) {
+                $resultado = $stmtVerifica->fetch(PDO::FETCH_ASSOC);
+                
+                if ($resultado) {
+                    // Log para depuração
+                    error_log("Item encontrado na tabela $tabela para o pedido $pedidoId e ID $itemId.");
+                    
+                    // Atualiza o status
+                    $sqlUpdate = "UPDATE $tabela SET status = :status WHERE id_pedido = :id_pedido AND id = :itemId";
+                    $stmtUpdate = $this->banco->prepare($sqlUpdate);
+                    $stmtUpdate->bindParam(':status', $novoStatus, PDO::PARAM_STR);
+                    $stmtUpdate->bindParam(':id_pedido', $pedidoId, PDO::PARAM_INT);
+                    $stmtUpdate->bindParam(':itemId', $itemId, PDO::PARAM_INT);
+                    
+                    if ($stmtUpdate->execute()) {
+                        error_log("Status atualizado com sucesso na tabela $tabela.");
+                        return ['success' => true, 'message' => "Status atualizado na tabela $tabela."];
+                    } else {
+                        error_log("Erro ao atualizar o status na tabela $tabela.");
+                        return ['success' => false, 'message' => "Erro ao atualizar o status na tabela $tabela."];
+                    }
+                } else {
+                    // Log para depuração
+                    error_log("Item NÃO encontrado na tabela $tabela para o pedido $pedidoId e ID $itemId.");
+                }
+            } else {
+                error_log("Erro na consulta SELECT na tabela $tabela.");
+            }
         }
     
-        // Prepara a query para atualizar o status
-        $sql = "UPDATE $tabela SET status = :status WHERE id_pedido = :id_pedido AND id = :itemId";
-        $stmt = $this->banco->prepare($sql);
-    
-        // Executa a query
-        $stmt->bindParam(':status', $novoStatus);
-        $stmt->bindParam(':id_pedido', $pedidoId);
-        $stmt->bindParam(':itemId', $itemId);
-    
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            throw new Exception("Erro ao atualizar o status do item na tabela $tabela.");
-        }
+        // Se não encontrou em nenhuma tabela, retorna erro
+        error_log("Item não encontrado em nenhuma tabela para o pedido $pedidoId e ID $itemId.");
+        return ['success' => false, 'message' => "Item não encontrado em nenhuma tabela para o pedido $pedidoId e ID $itemId."];
     }
+    
+    
+    
+
+    public function verificarStatusAtual($tipoItem, $itemId, $pedidoId) {
+        $tabelas = [
+            'Tradicional' => 'ovostradicionais',
+            'Tradicional recheado' => 'ovosrecheados',
+            'Caixa de bombom' => 'caixabombom',
+            'Ovo de colher' => 'ovoscolher'
+        ];
+        
+        if (!isset($tabelas[$tipoItem])) {
+            return "Tipo inválido";
+        }
+        
+        $sql = "SELECT status FROM ".$tabelas[$tipoItem]." 
+                WHERE id_pedido = :pedidoId AND id = :itemId";
+        $stmt = $this->banco->prepare($sql);
+        $stmt->bindParam(':pedidoId', $pedidoId);
+        $stmt->bindParam(':itemId', $itemId);
+        $stmt->execute();
+        
+        return $stmt->fetchColumn() ?: "Não encontrado";
+    }
+
 
     
 }
