@@ -1,11 +1,13 @@
 const pedidos = [];
 
-function adicionarPedido(id, nome, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso, 
+function adicionarPedido(id, nome, telefone, data, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso, 
     status_ovostradicionais, status_ovosrecheados, status_caixabombom, status_ovoscolher) {
 // Adiciona o pedido ao array de pedidos com todos os status
 pedidos.push({ 
 id, 
 nome, 
+telefone,
+data,
 itens, 
 id_ovostradicionais, 
 id_ovosrecheados, 
@@ -24,6 +26,8 @@ const listaPedidos = document.getElementById('lista-pedidos');
 const novoPedido = gerarCard({ 
 id, 
 nome, 
+telefone,
+data,
 itens, 
 id_ovostradicionais, 
 id_ovosrecheados, 
@@ -254,6 +258,8 @@ function gerarCard(pedido) {
         <div class="card" data-pedido-id="${normalizedPedido.id}">
             <h4>Pedido #${normalizedPedido.id}</h4>
             <p>Nome: ${normalizedPedido.nome}</p>
+            <p>Telefone: ${normalizedPedido.telefone}</p>
+            <p>Data: ${normalizedPedido.data}</p>
             <ul class="itens-pedido">
                 ${listaItens}  
             </ul>
@@ -339,6 +345,8 @@ function CarregarPedidos() {
                     adicionarPedido(
                         pedido.id, 
                         pedido.nome, 
+                        pedido.telefone,
+                        pedido.data,
                         pedido.itens, 
                         pedido.id_ovostradicionais, 
                         pedido.id_ovosrecheados, 

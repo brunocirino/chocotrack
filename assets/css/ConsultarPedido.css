@@ -252,6 +252,8 @@ select {
     cursor: pointer;
     outline: none;
     transition: 0.3s;
+    width: 100%;
+    max-width: 150px;
 }
 
 /* Altera a cor do select ao passar o mouse */
@@ -263,12 +265,6 @@ select {
 .status-select:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-/* Ajusta a largura para não ficar muito grande dentro do card */
-.status-select {
-    width: 100%;
-    max-width: 150px;
 }
 
 /* Estiliza as opções do select */
@@ -289,3 +285,71 @@ select {
 .status-select option[value="Concluído"] {
     color: #5cb85c;
 }
+
+/* Responsividade para telas menores */
+@media screen and (max-width: 768px) {
+    .status-select {
+        max-width: 100%;  
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .status-select {
+        max-width: 100%;
+    }
+}
+
+
+#filtros {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#filtros select, 
+#filtros input, 
+#filtros button {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#filtros select {
+    width: 150px;
+}
+
+#filtros input {
+    width: 200px;
+}
+
+#btnFiltrar {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+#btnFiltrar:hover {
+    background-color: #0056b3;
+}
+
+/* Responsivo para telas menores */
+@media screen and (max-width: 480px) {
+    #filtros {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px; 
+        margin-top: 10px;
+    }
+
+    #filtros select, 
+    #filtros input, 
+    #filtros button {
+        width: 45%;
+    }
+}
+
+

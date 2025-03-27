@@ -56,6 +56,8 @@ class PedidoModel {
         $sql = "SELECT 
                 p.id_identificador AS id, 
                 p.nome, 
+                p.telefone,
+                p.data,
                 GROUP_CONCAT(p.item ORDER BY p.id SEPARATOR ', ') AS itens,
     
                 (SELECT GROUP_CONCAT(ot.id ORDER BY ot.id SEPARATOR ', ') 

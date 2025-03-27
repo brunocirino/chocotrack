@@ -57,6 +57,17 @@
         </ul>
     </nav>
 
+    <div id="filtros">
+    <select id="tipoFiltro">
+        <option value="nome">Nome do Cliente</option>
+        <option value="pedido">Número do Pedido</option>
+        <option value="telefone">Telefone</option>
+        <option value="data">Data do Pedido</option>
+    </select>
+    <input type="text" id="valorFiltro" placeholder="Digite aqui...">
+    <button id="btnFiltrar">Filtrar</button>
+</div>
+
 
     <div class="conteudo" id="lista-pedidos">
         <!-- Os cards serão inseridos dinamicamente aqui -->
@@ -77,6 +88,7 @@
 
     <script src="../assets/js/menulateral.js"></script>
     <script src="../assets/js/consultarPedidos.js"></script>
+    <script src="../assets/js/FiltroPedidos.js"></script>
     
 </body>
 </html>
