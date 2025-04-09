@@ -34,7 +34,7 @@
     <nav class="menu-lateral">
         <!-- Itens do menu -->
         <ul>
-            <li class="item-menu"><a href="../view/index.php">
+            <li class="item-menu"><a href="../view/dashboard.php">
                 <span class="icon"><i class="bi bi-box-fill"></i></span>
                 <span class="txt-link">Dashboard</span>
             </a></li>
@@ -42,7 +42,7 @@
                 <span class="icon"><i class="bi bi-file-earmark-plus"></i></span>
                 <span class="txt-link">Inserir</span>
             </a></li>
-            <li class="item-menu"><a href="../view/AdicionarUsuarios.php">
+            <li class="item-menu"><a href="../view/ConsultarPedido.php">
                 <span class="icon"><i class="bi bi-clipboard"></i></span>
                 <span class="txt-link">Pedidos</span>
             </a></li>

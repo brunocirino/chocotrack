@@ -12,12 +12,13 @@ class PedidoModel {
         $this->banco->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public function cadastrarPedido($nome, $telefone, $data, $qtd_prod, $itens, $id_identificador) {
-        $sql = "INSERT INTO pedido (nome, telefone, data, qtd_prod, item, id_identificador) VALUES (:nome, :telefone, :data, :qtd_prod, :itens, :id_identificador)";
+    public function cadastrarPedido($nome, $telefone, $data, $valor, $qtd_prod, $itens, $id_identificador) {
+        $sql = "INSERT INTO pedido (nome, telefone, data, valor, qtd_prod, item, id_identificador) VALUES (:nome, :telefone, :data, :valor, :qtd_prod, :itens, :id_identificador)";
         $stmt = $this->banco->prepare($sql);
         $stmt->bindParam(":nome", $nome);
         $stmt->bindParam(":telefone", $telefone);
         $stmt->bindParam(":data", $data);
+        $stmt->bindParam(":valor", $valor);
         $stmt->bindParam(":qtd_prod", $qtd_prod);
         $stmt->bindParam(":itens", $itens);
         $stmt->bindParam(":id_identificador", $id_identificador);
@@ -58,6 +59,7 @@ class PedidoModel {
                 p.nome, 
                 p.telefone,
                 p.data,
+                p.valor,
                 GROUP_CONCAT(p.item ORDER BY p.id SEPARATOR ', ') AS itens,
     
                 (SELECT GROUP_CONCAT(ot.id ORDER BY ot.id SEPARATOR ', ') 
@@ -119,6 +121,105 @@ class PedidoModel {
         return false;
     }
     
+    public function consultarPedidosDashboar(){
+            $sql = "-- Tradicional
+                SELECT DISTINCT 
+                    p.id_identificador,
+                    p.nome,
+                    p.telefone,
+                    p.data,
+                    p.valor,
+                    p.item,
+                    p.qtd_prod,
+                    ot.casca1,
+                    NULL AS recheio1,
+                    ot.tpChocolate1,
+                    ot.casca2,
+                    NULL AS recheio2,
+                    ot.tpChocolate2,
+                    ot.peso,
+                    ot.status
+                FROM pedido p
+                LEFT JOIN ovostradicionais ot ON ot.id_pedido = p.id_identificador
+                WHERE p.item = 'Tradicional'
+
+                UNION ALL
+
+                -- Tradicional Recheado
+                SELECT DISTINCT 
+                    p.id_identificador,
+                    p.nome,
+                    p.telefone,
+                    p.data,
+                    p.valor,
+                    p.item,
+                    p.qtd_prod,
+                    orc.casca1,
+                    orc.recheio1,
+                    orc.tpchocolate1,
+                    orc.casca2,
+                    orc.recheio1, -- Você repetiu aqui, mas mantive como está
+                    orc.tpchocolate2,
+                    orc.peso,
+                    orc.status
+                FROM pedido p
+                LEFT JOIN ovosrecheados orc ON orc.id_pedido = p.id_identificador
+                WHERE p.item = 'Tradicional recheado'
+
+                UNION ALL
+
+                -- Caixa de Bombom
+                SELECT DISTINCT 
+                    p.id_identificador,
+                    p.nome,
+                    p.telefone,
+                    p.data,
+                    p.valor,
+                    p.item,
+                    p.qtd_prod,
+                    cb.tpBombom AS casca1,
+                    cb.tpRecheio AS recheio1,
+                    cb.sabor AS tpChocolate1,
+                    NULL AS casca2,
+                    cb.Recheio AS recheio2,
+                    NULL AS tpChocolate2,
+                    cb.peso,
+                    cb.status
+                FROM pedido p
+                LEFT JOIN caixabombom cb ON cb.id_pedido = p.id_identificador
+                WHERE p.item = 'Caixa de bombom'
+
+                UNION ALL
+
+                -- Ovo de Colher
+                SELECT DISTINCT 
+                    p.id_identificador,
+                    p.nome,
+                    p.telefone,
+                    p.data,
+                    p.valor,
+                    p.item,
+                    p.qtd_prod,
+                    oc.casca1,
+                    oc.recheio1,
+                    oc.tpchocolate1,
+                    NULL AS casca2,
+                    NULL AS recheio2,
+                    NULL AS tpChocolate2,
+                    oc.peso,
+                    oc.status
+                FROM pedido p
+                LEFT JOIN ovoscolher oc ON oc.id_pedido = p.id_identificador
+                WHERE p.item = 'Colher';";
+        $stmt = $this->banco->prepare($sql);
+
+        if ($stmt->execute()){
+            $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $resultado;
+        }
+
+        return false;
+    }
 
     public function consultarPedido($id_identificador){
         $sql = "SELECT * FROM pedido WHERE id_identificador";

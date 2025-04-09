@@ -23,7 +23,7 @@
     <nav class="menu-lateral">
         <!-- Itens do menu -->
         <ul>
-            <li class="item-menu"><a href="../view/Estoque.php">
+            <li class="item-menu"><a href="../view/dashboard.php">
                 <span class="icon"><i class="bi bi-box-fill"></i></span>
                 <span class="txt-link">Dashboard</span>
             </a></li>

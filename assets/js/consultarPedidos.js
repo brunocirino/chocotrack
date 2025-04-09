@@ -1,6 +1,6 @@
 const pedidos = [];
 
-function adicionarPedido(id, nome, telefone, data, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso, 
+function adicionarPedido(id, nome, telefone, data, valor, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso, 
     status_ovostradicionais, status_ovosrecheados, status_caixabombom, status_ovoscolher) {
 // Adiciona o pedido ao array de pedidos com todos os status
 pedidos.push({ 
@@ -8,6 +8,7 @@ id,
 nome, 
 telefone,
 data,
+valor,
 itens, 
 id_ovostradicionais, 
 id_ovosrecheados, 
@@ -28,6 +29,7 @@ id,
 nome, 
 telefone,
 data,
+valor,
 itens, 
 id_ovostradicionais, 
 id_ovosrecheados, 
@@ -260,6 +262,7 @@ function gerarCard(pedido) {
             <p>Nome: ${normalizedPedido.nome}</p>
             <p>Telefone: ${normalizedPedido.telefone}</p>
             <p>Data: ${normalizedPedido.data}</p>
+            <p>Valor: ${Number(normalizedPedido.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
             <ul class="itens-pedido">
                 ${listaItens}  
             </ul>
@@ -347,6 +350,7 @@ function CarregarPedidos() {
                         pedido.nome, 
                         pedido.telefone,
                         pedido.data,
+                        pedido.valor,
                         pedido.itens, 
                         pedido.id_ovostradicionais, 
                         pedido.id_ovosrecheados, 

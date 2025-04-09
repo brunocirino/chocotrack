@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $data["nome"], 
             $data["telefone"], 
             $data["data"], 
+            $data["valor"], 
             $qtd_produto,  // Passando a quantidade correta
             $nome_produto,    
             $id_identificador   // Passando apenas um produto

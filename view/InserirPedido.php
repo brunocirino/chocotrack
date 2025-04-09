@@ -78,6 +78,10 @@
                     <input type="number" id="qtd" name="qtd" required placeholder=" " value="1" min="1" onchange="atualizarCampos()" />
                     <label>Quantidade</label>
                 </div>
+                <div class="box-user">
+                    <input type="number" step="0.01" id="valor" name="valor" required placeholder=" "/>
+                    <label>Valor</label>
+                </div>
                 <div class="produtos-1-campos">
                     <h3>Produto 1</h3>
                     <!-- Seletor de Produto -->

@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
         data["telefone"] = document.querySelector('input[name="telefone"]').value;
         data["data"] = document.querySelector('input[name="data"]').value;
         data["qtd"] = parseInt(document.querySelector('input[name="qtd"]').value); 
+        data["valor"] = document.querySelector('input[name="valor"]').value;
 
         // Cria o array de produtos com base na quantidade
         let produtos = [];
