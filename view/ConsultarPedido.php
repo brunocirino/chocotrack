@@ -81,7 +81,6 @@
             <div id="itens-pedido">
                 <!-- Itens serão carregados via JS aqui -->
             </div>
-            <button onclick="concluirPedido()">Concluir Pedido</button>
         </div>
     </div>
 

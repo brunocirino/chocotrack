@@ -222,10 +222,10 @@ class PedidoModel {
     }
 
     public function consultarPedido($id_identificador){
-        $sql = "SELECT * FROM pedido WHERE id_identificador";
+        $sql = "SELECT * FROM pedido WHERE id_identificador = ?";
         $stmt = $this->banco->prepare($sql);
 
-        if ($stmt->execute()){
+        if ($stmt->execute([$id_identificador])){
             $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;
         }
@@ -234,10 +234,10 @@ class PedidoModel {
     }
 
     public function buscarBombons($id_identificador){
-        $sql = "SELECT * FROM caixabombom WHERE id_pedido";
+        $sql = "SELECT * FROM caixabombom WHERE id_pedido = ?";
         $stmt = $this->banco->prepare($sql);
 
-        if ($stmt->execute()){
+        if ($stmt->execute([$id_identificador])){
             $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;
         }
@@ -246,10 +246,10 @@ class PedidoModel {
     }
 
     public function buscarColher($id_identificador){
-        $sql = "SELECT * FROM ovoscolher WHERE id_pedido";
+        $sql = "SELECT * FROM ovoscolher WHERE id_pedido = ?";
         $stmt = $this->banco->prepare($sql);
 
-        if ($stmt->execute()){
+        if ($stmt->execute([$id_identificador])){
             $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;
         }
@@ -258,22 +258,22 @@ class PedidoModel {
     }
 
     public function buscarTradicional($id_identificador){
-        $sql = "SELECT * FROM ovostradicionais WHERE id_pedido";
+        $sql = "SELECT * FROM ovostradicionais WHERE id_pedido = ?";
         $stmt = $this->banco->prepare($sql);
-
-        if ($stmt->execute()){
+    
+        if ($stmt->execute([$id_identificador])) {
             $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;
         }
-
+    
         return false;
     }
-
+    
     public function buscarRecheado($id_identificador){
-        $sql = "SELECT * FROM ovosrecheados WHERE id_pedido";
+        $sql = "SELECT * FROM ovosrecheados WHERE id_pedido = ?";
         $stmt = $this->banco->prepare($sql);
 
-        if ($stmt->execute()){
+        if ($stmt->execute([$id_identificador])){
             $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;
         }

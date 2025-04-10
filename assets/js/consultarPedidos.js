@@ -46,68 +46,80 @@ listaPedidos.innerHTML += novoPedido;
 
 
 
-function CarregarBombons(id_identificador,  callback){
-    $.ajax({
-        url: '../controller/get_Bombons.php', 
-        method: 'GET',
-        data: { id: id_identificador },
-        success: function(response) {
-            console.log('Requisição AJAX bem sucedida:', response);
-            callback(response);
-        },
-        error: function(xhr, status, error) {
-            console.error('Erro na requisição AJAX:', error);
-        }
+function CarregarBombons(id_identificador) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../controller/get_Bombons.php',
+            method: 'GET',
+            data: { id: id_identificador },
+            success: function(response) {
+                console.log('Resposta bruta:', response);
+                resolve(response); // resolve os dados
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro na requisição AJAX:', error);
+                reject('Erro na requisição AJAX: ' + error);
+            }
+        });
     });
 }
+
 
 function CarregarTradicionais(id_identificador){
-    $.ajax({
-        url: '../controller/get_Tradicional.php', 
-        method: 'GET',
-        data: { id: id_identificador },
-        success: function(response) {
-            console.log('Requisição AJAX bem sucedida:', response);
-            return response
-        },
-        error: function(xhr, status, error) {
-            console.error('Erro na requisição AJAX:', error);
-        }
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../controller/get_Tradicional.php', 
+            method: 'GET',
+            data: { id: id_identificador },
+            success: function(response) {
+                console.log('Resposta bruta:', response);
+                resolve(response); // Já está como objeto
+            },
+            error: function(xhr, status, error) {
+                reject('Erro na requisição AJAX: ' + error);
+            }
+        });
     });
 }
 
-function CarregarColher(id_identificador){
-    $.ajax({
-        url: '../controller/get_Colher.php', 
-        method: 'GET',
-        data: { id: id_identificador },
-        success: function(response) {
-            console.log('Requisição AJAX bem sucedida:', response);
-            return response
-            
-        },
-        error: function(xhr, status, error) {
-            console.error('Erro na requisição AJAX:', error);
-            console.error('Resposta do servidor:', xhr.responseText);
-        }
+
+
+function CarregarColher(id_identificador) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../controller/get_Colher.php',
+            method: 'GET',
+            data: { id: id_identificador },
+            success: function(response) {
+                console.log('Resposta bruta:', response);
+                resolve(response); // Pode fazer o parse aqui se necessário
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro na requisição AJAX:', error);
+                console.error('Resposta do servidor:', xhr.responseText);
+                reject('Erro na requisição AJAX: ' + error);
+            }
+        });
     });
 }
 
-function CarregarRecheados(id_identificador){
-    $.ajax({
-        url: '../controller/get_Recheado.php', 
-        method: 'GET',
-        data: { id: id_identificador },
-        success: function(response) {
-            console.log('Requisição AJAX bem sucedida:', response);
-            return response
-            
-        },
-        error: function(xhr, status, error) {
-            console.error('Erro na requisição AJAX:', error);
-        }
+function CarregarRecheados(id_identificador) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../controller/get_Recheado.php', 
+            method: 'GET',
+            data: { id: id_identificador },
+            success: function(response) {
+                console.log('Resposta bruta:', response);
+                resolve(response); // Retorna o conteúdo como está
+            },
+            error: function(xhr, status, error) {
+                reject('Erro na requisição AJAX: ' + error);
+            }
+        });
     });
 }
+
 
 function InsertArray(arrayPedidos) {
     const agrupados = {};
@@ -170,7 +182,7 @@ function InsertArray(arrayPedidos) {
 
 
 function gerarCard(pedido) {
-    const statusOptions = ['Pendente', 'Em andamento', 'Concluído'];
+    const statusOptions = ['Pendente', 'Em andamento', 'Fabricado', 'Embalado','Concluído'];
 
     // Função para garantir que os dados sejam arrays válidos
     const ensureArray = (data) => {
@@ -239,7 +251,7 @@ function gerarCard(pedido) {
         contadores[item]++;
 
         return `
-            <li>
+            <li onclick='openModal(${normalizedPedido.id}, "${item}")'>
                 <span class="icone-item">⮞</span> ${item}
                 <select class="status-select" 
                         data-item-id="${itemId}"
@@ -254,6 +266,7 @@ function gerarCard(pedido) {
                 </select>
             </li>
         `;
+
     }).join('');
 
     return `
@@ -264,6 +277,7 @@ function gerarCard(pedido) {
             <p>Data: ${normalizedPedido.data}</p>
             <p>Valor: ${Number(normalizedPedido.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
             <ul class="itens-pedido">
+
                 ${listaItens}  
             </ul>
         </div>
@@ -311,22 +325,111 @@ function atualizarStatus(selectElement) {
 }
 
 
-function openModal(pedidoId) {
+async function openModal(pedidoId, item) {
     const modal = document.getElementById('modal-pedido');
     const itensPedido = document.getElementById('itens-pedido');
-    
-    itensPedido.innerHTML = `
-        <p>Item 1 - Status: Aguardando</p>
-        <p>Item 2 - Status: Concluído</p>
-        <p>Item 3 - Status: Em andamento</p>
+    itensPedido.innerHTML = ''; 
+
+    console.log("Abrindo modal para:", pedidoId, item);
+
+    // Inicializa com cabeçalho do pedido
+    let conteudoHTML = `
+        <p><strong>Pedido:</strong> #${pedidoId}</p>
+        <p><strong>Tipo de item:</strong> ${item}</p>
+        <hr/>
     `;
-    
+
+    if (item === 'Tradicional') {
+        try {
+            const retornos = await CarregarTradicionais(pedidoId);
+
+            retornos.forEach(detalhe => {
+                conteudoHTML += `
+                    <div class="item-detalhe">
+                        <p><strong>Casca 1:</strong> ${detalhe.casca1} (${detalhe.tpChocolate1})</p>
+                        <p><strong>Casca 2:</strong> ${detalhe.casca2} (${detalhe.tpChocolate2})</p>
+                        <p><strong>Peso:</strong> ${detalhe.peso}g</p>
+                        <p><strong>Status:</strong> ${detalhe.status}</p>
+                    </div>
+                    <hr/>
+                `;
+            });
+
+        } catch (error) {
+            conteudoHTML += `<p style="color:red;">Erro ao carregar detalhes: ${error}</p>`;
+        }
+    }
+    if (item === 'Tradicional recheado') {
+        try {
+            const retornos = await CarregarRecheados(pedidoId);
+
+            retornos.forEach(detalhe => {
+                conteudoHTML += `
+                    <div class="item-detalhe">
+                        <p><strong>Casca 1:</strong> ${detalhe.casca1} (${detalhe.tpchocolate1}) (${detalhe.recheio1})</p>
+                        <p><strong>Casca 2:</strong> ${detalhe.casca2} (${detalhe.tpchocolate2}) (${detalhe.recheio2})</p>
+                        <p><strong>Peso:</strong> ${detalhe.peso}g</p>
+                        <p><strong>Status:</strong> ${detalhe.status}</p>
+                    </div>
+                    <hr/>
+                `;
+            });
+
+        } catch (error) {
+            conteudoHTML += `<p style="color:red;">Erro ao carregar detalhes: ${error}</p>`;
+        }
+    }
+    if (item === 'Caixa de bombom') {
+        try {
+            const retornos = await CarregarBombons(pedidoId);
+
+            retornos.forEach(detalhe => {
+                conteudoHTML += `
+                    <div class="item-detalhe">
+                        <p><strong>Casca 1:</strong> ${detalhe.casca1} (${detalhe.tpChocolate1})</p>
+                        <p><strong>Casca 2:</strong> ${detalhe.casca2} (${detalhe.tpChocolate2})</p>
+                        <p><strong>Peso:</strong> ${detalhe.peso}g</p>
+                        <p><strong>Status:</strong> ${detalhe.status}</p>
+                    </div>
+                    <hr/>
+                `;
+            });
+
+        } catch (error) {
+            conteudoHTML += `<p style="color:red;">Erro ao carregar detalhes: ${error}</p>`;
+        }
+    }
+    if (item === 'Colher') {
+        try {
+            const retornos = await CarregarColher(pedidoId);
+
+            retornos.forEach(detalhe => {
+                conteudoHTML += `
+                    <div class="item-detalhe">
+                        <p><strong>Casca 1:</strong> ${detalhe.casca1} (${detalhe.tpChocolate1})</p>
+                        <p><strong>Casca 2:</strong> ${detalhe.casca2} (${detalhe.tpChocolate2})</p>
+                        <p><strong>Peso:</strong> ${detalhe.peso}g</p>
+                        <p><strong>Status:</strong> ${detalhe.status}</p>
+                    </div>
+                    <hr/>
+                `;
+            });
+
+        } catch (error) {
+            conteudoHTML += `<p style="color:red;">Erro ao carregar detalhes: ${error}</p>`;
+        }
+    }
+
+    itensPedido.innerHTML = conteudoHTML;
     modal.style.display = 'flex';
 }
 
+
 function closeModal() {
     const modal = document.getElementById('modal-pedido');
+    const itensPedido = document.getElementById('itens-pedido'); 
     modal.style.display = 'none';
+    if (itensPedido) itensPedido.innerHTML = '';
 }
 function toggleCheck(element) {
     element.classList.toggle("checked");
