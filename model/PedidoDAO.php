@@ -12,13 +12,14 @@ class PedidoModel {
         $this->banco->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public function cadastrarPedido($nome, $telefone, $data, $valor, $qtd_prod, $itens, $id_identificador) {
-        $sql = "INSERT INTO pedido (nome, telefone, data, valor, qtd_prod, item, id_identificador) VALUES (:nome, :telefone, :data, :valor, :qtd_prod, :itens, :id_identificador)";
+    public function cadastrarPedido($nome, $telefone, $data, $valor, $observacao, $qtd_prod, $itens, $id_identificador) {
+        $sql = "INSERT INTO pedido (nome, telefone, data, valor, observacao, qtd_prod, item, id_identificador) VALUES (:nome, :telefone, :data, :valor, :observacao, :qtd_prod, :itens, :id_identificador)";
         $stmt = $this->banco->prepare($sql);
         $stmt->bindParam(":nome", $nome);
         $stmt->bindParam(":telefone", $telefone);
         $stmt->bindParam(":data", $data);
         $stmt->bindParam(":valor", $valor);
+        $stmt->bindParam(":observacao", $observacao);
         $stmt->bindParam(":qtd_prod", $qtd_prod);
         $stmt->bindParam(":itens", $itens);
         $stmt->bindParam(":id_identificador", $id_identificador);
@@ -60,6 +61,7 @@ class PedidoModel {
                 p.telefone,
                 p.data,
                 p.valor,
+                p.observacao,
                 GROUP_CONCAT(p.item ORDER BY p.id SEPARATOR ', ') AS itens,
     
                 (SELECT GROUP_CONCAT(ot.id ORDER BY ot.id SEPARATOR ', ') 
