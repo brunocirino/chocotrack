@@ -23,8 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $data["nome"], 
             $data["telefone"], 
             $data["data"], 
-            $data["valor"], 
-            $data["observacao"],
+            $data["valor"],
             $qtd_produto,  // Passando a quantidade correta
             $nome_produto,    
             $id_identificador   // Passando apenas um produto
@@ -49,7 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             $produto["tipo_chocolate_1"], 
                             $produto["casca_2"], 
                             $produto["tipo_chocolate_2"], 
+                            $produto["observacao"],
                             $produto["peso"]
+                                
                         );
                         break;
 
@@ -62,7 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             $produto["casca_2"], 
                             $produto["recheio_2"], 
                             $produto["tipo_chocolate_2"], 
+                            $produto["observacao"],
                             $produto["peso"]
+                            
                         );
                         break;
 
@@ -72,7 +75,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             $produto["casca_1"], 
                             $produto["recheio_1"], 
                             $produto["tipo_chocolate_1"], 
-                            $produto["peso"]
+                            $produto["observacao"],
+                            $produto["peso"],
+                           
                         );
                         break;
 
@@ -84,7 +89,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             $produto["tpRecheio"], 
                             $produto["sabor"], 
                             $produto["Recheio"], 
-                            $produto["peso"]
+                            $produto["observacao"],
+                            $produto["peso"],
+                            
                         );
                         break;
 

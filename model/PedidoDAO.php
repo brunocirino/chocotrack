@@ -12,14 +12,13 @@ class PedidoModel {
         $this->banco->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public function cadastrarPedido($nome, $telefone, $data, $valor, $observacao, $qtd_prod, $itens, $id_identificador) {
-        $sql = "INSERT INTO pedido (nome, telefone, data, valor, observacao, qtd_prod, item, id_identificador) VALUES (:nome, :telefone, :data, :valor, :observacao, :qtd_prod, :itens, :id_identificador)";
+    public function cadastrarPedido($nome, $telefone, $data, $valor, $qtd_prod, $itens, $id_identificador) {
+        $sql = "INSERT INTO pedido (nome, telefone, data, valor, qtd_prod, item, id_identificador) VALUES (:nome, :telefone, :data, :valor, :qtd_prod, :itens, :id_identificador)";
         $stmt = $this->banco->prepare($sql);
         $stmt->bindParam(":nome", $nome);
         $stmt->bindParam(":telefone", $telefone);
         $stmt->bindParam(":data", $data);
         $stmt->bindParam(":valor", $valor);
-        $stmt->bindParam(":observacao", $observacao);
         $stmt->bindParam(":qtd_prod", $qtd_prod);
         $stmt->bindParam(":itens", $itens);
         $stmt->bindParam(":id_identificador", $id_identificador);
@@ -235,11 +234,11 @@ class PedidoModel {
         return false;
     }
 
-    public function buscarBombons($id_identificador){
-        $sql = "SELECT * FROM caixabombom WHERE id_pedido = ?";
+    public function buscarBombons($id_identificador, $id_linha){
+        $sql = "SELECT * FROM caixabombom WHERE id_pedido = ? AND id = ?";
         $stmt = $this->banco->prepare($sql);
 
-        if ($stmt->execute([$id_identificador])){
+        if ($stmt->execute([$id_identificador, $id_linha])){
             $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;
         }
@@ -247,11 +246,11 @@ class PedidoModel {
         return false;
     }
 
-    public function buscarColher($id_identificador){
-        $sql = "SELECT * FROM ovoscolher WHERE id_pedido = ?";
+    public function buscarColher($id_identificador, $id_linha){
+        $sql = "SELECT * FROM ovoscolher WHERE id_pedido = ? AND id = ?";
         $stmt = $this->banco->prepare($sql);
 
-        if ($stmt->execute([$id_identificador])){
+        if ($stmt->execute([$id_identificador, $id_linha])){
             $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;
         }
@@ -259,11 +258,11 @@ class PedidoModel {
         return false;
     }
 
-    public function buscarTradicional($id_identificador){
-        $sql = "SELECT * FROM ovostradicionais WHERE id_pedido = ?";
+    public function buscarTradicional($id_identificador, $id_linha){
+        $sql = "SELECT * FROM ovostradicionais WHERE id_pedido = ? AND id = ?";
         $stmt = $this->banco->prepare($sql);
     
-        if ($stmt->execute([$id_identificador])) {
+        if ($stmt->execute([$id_identificador, $id_linha])) {
             $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;
         }
@@ -271,11 +270,11 @@ class PedidoModel {
         return false;
     }
     
-    public function buscarRecheado($id_identificador){
-        $sql = "SELECT * FROM ovosrecheados WHERE id_pedido = ?";
+    public function buscarRecheado($id_identificador, $id_linha){
+        $sql = "SELECT * FROM ovosrecheados WHERE id_pedido = ? AND id = ?";
         $stmt = $this->banco->prepare($sql);
 
-        if ($stmt->execute([$id_identificador])){
+        if ($stmt->execute([$id_identificador, $id_linha])){
             $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $resultado;
         }

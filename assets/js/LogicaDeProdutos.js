@@ -51,6 +51,11 @@ function LogicaCampos(index) {
             contTMP += 1
         }
         contêinerProduto.innerHTML += ` 
+            <h5>Observação</h5>
+            <div class="box-user">
+                    <input type="text" name="observacao-${index}" id="observacao-${index}" placeholder=" ">
+                    <label>Observação</label>
+            </div>
             <h5>Peso do ovo</h5>
              <div class="box-user">
                 <select id="peso-${index}" name="peso-${index}" required>
@@ -59,7 +64,8 @@ function LogicaCampos(index) {
                     <option value="250">250g</option>    
                     <option value="350">350g</option>  
                     <option value="400">400g</option>   
-                    <option value="500">500g</option>   
+                    <option value="500">500g</option> 
+                    <option value="750">750g</option>   
                     <option value="1kg">1kg</option>                                                             
                 </select>
             </div>
@@ -96,6 +102,11 @@ function LogicaCampos(index) {
         }
         
         contêinerProduto.innerHTML += ` 
+        <h5>Observação</h5>
+            <div class="box-user">
+                    <input type="text" name="observacao-${index}" id="observacao-${index}" placeholder=" ">
+                    <label>Observação</label>
+            </div>
         <h5>Peso do ovo</h5>
          <div class="box-user">
             <select id="peso-${index}" name="peso-${index}" required>
@@ -104,7 +115,8 @@ function LogicaCampos(index) {
                 <option value="250">250g</option>    
                 <option value="350">350g</option>  
                 <option value="400">400g</option>   
-                <option value="500">500g</option>   
+                <option value="500">500g</option>  
+                <option value="750">750g</option>  
                 <option value="1kg">1kg</option>                                                             
             </select>
         </div>
@@ -133,6 +145,11 @@ function LogicaCampos(index) {
                     <option value="Branco">Branco</option>                                                               
                 </select>
             </div>
+            <h5>Observação</h5>
+            <div class="box-user">
+                    <input type="text" name="observacao-${index}" id="observacao-${index}" placeholder=" ">
+                    <label>Observação</label>
+            </div>
             <h5>Peso do ovo</h5>
             <div class="box-user">
                 <select id="peso-${index}" name="peso-${index}" required>
@@ -142,6 +159,7 @@ function LogicaCampos(index) {
                     <option value="350">350g</option>  
                     <option value="400">400g</option>   
                     <option value="500">500</option>   
+                    <option value="750">750g</option> 
                     <option value="1kg">1kg</option>                                                             
                 </select>
             </div>
@@ -215,6 +233,11 @@ function LogicaCampos(index) {
                     if (ConteudoBombom === "Sortido") {
                         // Adiciona o select para "peso"
                         conteudoAdicional.innerHTML += `
+                        <h5>Observação</h5>
+                        <div class="box-user">
+                                <input type="text" name="observacao-${index}" id="observacao-${index}" placeholder=" ">
+                                <label>Observação</label>
+                        </div>
                         <h5>Peso da caixa de bombom</h5>
                             <div class="box-user">
                                 <select id="peso-${index}" name="peso-${index}" required>
@@ -223,7 +246,8 @@ function LogicaCampos(index) {
                                     <option value="250">250g</option>    
                                     <option value="350">350g</option>  
                                     <option value="400">400g</option>   
-                                    <option value="500">500g</option>   
+                                    <option value="500">500g</option>  
+                                    <option value="750">750g</option>   
                                     <option value="1kg">1kg</option>                                                             
                                 </select>
                             </div>
@@ -243,6 +267,11 @@ function LogicaCampos(index) {
                                     <option value="Amendoin">Amendoin</option>                                                             
                                 </select>
                             </div>
+                            <h5>Observação</h5>
+                            <div class="box-user">
+                                    <input type="text" name="observacao-${index}" id="observacao-${index}" placeholder=" ">
+                                    <label>Observação</label>
+                            </div>
                                                     <h5>Peso da caixa de bombom</h5>
                             <div class="box-user">
                                 <select id="peso-${index}" name="peso-${index}" required>
@@ -252,6 +281,7 @@ function LogicaCampos(index) {
                                     <option value="350">350g</option>  
                                     <option value="400">400g</option>   
                                     <option value="500">500g</option>   
+                                    <option value="750">750g</option> 
                                     <option value="1kg">1kg</option>                                                             
                                 </select>
                             </div>
@@ -268,6 +298,11 @@ function LogicaCampos(index) {
                         <label>Recheio ${index}</label>
                         <div id="recheio-dropdown_${index}" class="dropdown"></div>
                     </div>
+                    <h5>Observação</h5>
+                    <div class="box-user">
+                            <input type="text" name="observacao-${index}" id="observacao-${index}" placeholder=" ">
+                            <label>Observação</label>
+                    </div>
                                             <h5>Peso da caixa de bombom</h5>
                             <div class="box-user">
                                 <select id="peso-${index}" name="peso-${index}">
@@ -276,7 +311,8 @@ function LogicaCampos(index) {
                                     <option value="250">250g</option>    
                                     <option value="350">350g</option>  
                                     <option value="400">400g</option>   
-                                    <option value="500">500g</option>   
+                                    <option value="500">500g</option> 
+                                    <option value="750">750g</option>   
                                     <option value="1kg">1kg</option>                                                             
                                 </select>
                             </div>

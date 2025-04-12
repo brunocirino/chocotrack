@@ -242,3 +242,33 @@ h5{
 select {
     pointer-events: auto;
 }
+
+/* Estilização para textarea igual ao input */
+.box-user textarea {
+    width: 90%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+    resize: vertical; /* Permite redimensionar só na vertical */
+    transition: all 0.3s;
+    font-family: inherit; /* Para manter a mesma fonte */
+}
+
+/* Foco no textarea */
+.box-user textarea:focus {
+    border-color: var(--color-info-dark);
+    box-shadow: 0 0 8px rgba(59, 127, 237, 0.5);
+}
+
+/* Label flutuante no textarea */
+.box-user textarea:focus + label,
+.box-user textarea:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 10px;
+    font-size: 12px;
+    color: var(--color-dark-variant);
+    background-color: #fff;
+    padding: 0 5px;
+}

@@ -34,7 +34,7 @@
     <nav class="menu-lateral">
         <!-- Itens do menu -->
         <ul>
-            <li class="item-menu"><a href="../view/index.php">
+            <li class="item-menu"><a href="../view/dashboard.php">
                 <span class="icon"><i class="bi bi-box-fill"></i></span>
                 <span class="txt-link">Dashboard</span>
             </a></li>
@@ -81,10 +81,6 @@
                 <div class="box-user">
                     <input type="number" step="0.01" id="valor" name="valor" required placeholder=" "/>
                     <label>Valor</label>
-                </div>
-                <div class="box-user">
-                    <input type="text" name="observacao" required placeholder=" ">
-                    <label>Observação</label>
                 </div>
                 <div class="produtos-1-campos">
                     <h3>Produto 1</h3>

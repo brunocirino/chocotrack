@@ -48,12 +48,12 @@ listaPedidos.innerHTML += novoPedido;
 
 
 
-function CarregarBombons(id_identificador) {
+function CarregarBombons(id_identificador, itemIdlinha) {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: '../controller/get_Bombons.php',
             method: 'GET',
-            data: { id: id_identificador },
+            data: { id: id_identificador, id_linha: itemIdlinha},
             success: function(response) {
                 console.log('Resposta bruta:', response);
                 resolve(response); // resolve os dados
@@ -67,12 +67,12 @@ function CarregarBombons(id_identificador) {
 }
 
 
-function CarregarTradicionais(id_identificador){
+function CarregarTradicionais(id_identificador, itemIdlinha){
     return new Promise((resolve, reject) => {
         $.ajax({
             url: '../controller/get_Tradicional.php', 
             method: 'GET',
-            data: { id: id_identificador },
+            data: { id: id_identificador, id_linha: itemIdlinha},
             success: function(response) {
                 console.log('Resposta bruta:', response);
                 resolve(response); // Já está como objeto
@@ -86,12 +86,12 @@ function CarregarTradicionais(id_identificador){
 
 
 
-function CarregarColher(id_identificador) {
+function CarregarColher(id_identificador, itemIdlinha) {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: '../controller/get_Colher.php',
             method: 'GET',
-            data: { id: id_identificador },
+            data: { id: id_identificador , id_linha: itemIdlinha},
             success: function(response) {
                 console.log('Resposta bruta:', response);
                 resolve(response); // Pode fazer o parse aqui se necessário
@@ -105,12 +105,12 @@ function CarregarColher(id_identificador) {
     });
 }
 
-function CarregarRecheados(id_identificador) {
+function CarregarRecheados(id_identificador, itemIdlinha) {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: '../controller/get_Recheado.php', 
             method: 'GET',
-            data: { id: id_identificador },
+            data: { id: id_identificador, id_linha: itemIdlinha },
             success: function(response) {
                 console.log('Resposta bruta:', response);
                 resolve(response); // Retorna o conteúdo como está
@@ -253,13 +253,13 @@ function gerarCard(pedido) {
         contadores[item]++;
 
         return `
-            <li onclick='openModal(${normalizedPedido.id}, "${item}")'>
+            <li onclick='handleItemClick(event, ${normalizedPedido.id}, "${item}", this)' data-item-id="${itemId}">
                 <span class="icone-item">⮞</span> ${item}
                 <select class="status-select" 
                         data-item-id="${itemId}"
                         data-pedido-id="${normalizedPedido.id}"
                         data-itens='${JSON.stringify(normalizedPedido.itens)}'
-                        onchange="atualizarStatus(this)">
+                        onchange="atualizarStatus(this);">
                     ${statusOptions.map(option => `
                         <option value="${option}" ${option.toLowerCase() === itemStatus.toLowerCase() ? 'selected' : ''}>
                             ${option}
@@ -278,7 +278,6 @@ function gerarCard(pedido) {
             <p>Telefone: ${normalizedPedido.telefone}</p>
             <p>Data: ${normalizedPedido.data}</p>
             <p>Valor: ${Number(normalizedPedido.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-            <p>Observação: ${normalizedPedido.observacao}</p>
             <ul class="itens-pedido">
 
                 ${listaItens}  
@@ -286,6 +285,19 @@ function gerarCard(pedido) {
         </div>
     `;
 }
+
+// Função para controlar o clique no item
+function handleItemClick(event, pedidoId, item, liElement) {
+    // Verifica se o clique foi na caixa de seleção
+    if (event.target.tagName.toLowerCase() === 'select') {
+        // Se for, apenas evita a propagação do clique
+        event.stopPropagation();
+        return;
+    }
+    // Caso contrário, chama o modal
+    openModal(pedidoId, item, liElement);
+}
+
 
 function atualizarStatus(selectElement) {
     const novoStatus = selectElement.value;
@@ -328,9 +340,10 @@ function atualizarStatus(selectElement) {
 }
 
 
-async function openModal(pedidoId, item) {
+async function openModal(pedidoId, item, element) {
     const modal = document.getElementById('modal-pedido');
     const itensPedido = document.getElementById('itens-pedido');
+    const itemIdlinha = element.getAttribute('data-item-id');
     itensPedido.innerHTML = ''; 
 
     console.log("Abrindo modal para:", pedidoId, item);
@@ -344,13 +357,14 @@ async function openModal(pedidoId, item) {
 
     if (item === 'Tradicional') {
         try {
-            const retornos = await CarregarTradicionais(pedidoId);
+            const retornos = await CarregarTradicionais(pedidoId, itemIdlinha);
 
             retornos.forEach(detalhe => {
                 conteudoHTML += `
                     <div class="item-detalhe">
                         <p><strong>Casca 1:</strong> ${detalhe.casca1} (${detalhe.tpChocolate1})</p>
                         <p><strong>Casca 2:</strong> ${detalhe.casca2} (${detalhe.tpChocolate2})</p>
+                        <p><strong>Peso:</strong> ${detalhe.observacao}g</p>
                         <p><strong>Peso:</strong> ${detalhe.peso}g</p>
                         <p><strong>Status:</strong> ${detalhe.status}</p>
                     </div>
@@ -364,13 +378,14 @@ async function openModal(pedidoId, item) {
     }
     if (item === 'Tradicional recheado') {
         try {
-            const retornos = await CarregarRecheados(pedidoId);
+            const retornos = await CarregarRecheados(pedidoId, itemIdlinha);
 
             retornos.forEach(detalhe => {
                 conteudoHTML += `
                     <div class="item-detalhe">
                         <p><strong>Casca 1:</strong> ${detalhe.casca1} (${detalhe.tpchocolate1}) (${detalhe.recheio1})</p>
                         <p><strong>Casca 2:</strong> ${detalhe.casca2} (${detalhe.tpchocolate2}) (${detalhe.recheio2})</p>
+                        <p><strong>Peso:</strong> ${detalhe.observacao}g</p>
                         <p><strong>Peso:</strong> ${detalhe.peso}g</p>
                         <p><strong>Status:</strong> ${detalhe.status}</p>
                     </div>
@@ -384,13 +399,14 @@ async function openModal(pedidoId, item) {
     }
     if (item === 'Caixa de bombom') {
         try {
-            const retornos = await CarregarBombons(pedidoId);
+            const retornos = await CarregarBombons(pedidoId, itemIdlinha);
 
             retornos.forEach(detalhe => {
                 conteudoHTML += `
                     <div class="item-detalhe">
-                        <p><strong>Casca 1:</strong> ${detalhe.casca1} (${detalhe.tpChocolate1})</p>
-                        <p><strong>Casca 2:</strong> ${detalhe.casca2} (${detalhe.tpChocolate2})</p>
+                        <p><strong>Tipo Bombom:</strong> ${detalhe.tpBombom}</p>
+                        <p><strong>Tipo Recheio:</strong> ${detalhe.tpRecheio}</p>
+                        <p><strong>Peso:</strong> ${detalhe.observacao}g</p>
                         <p><strong>Peso:</strong> ${detalhe.peso}g</p>
                         <p><strong>Status:</strong> ${detalhe.status}</p>
                     </div>
@@ -404,13 +420,14 @@ async function openModal(pedidoId, item) {
     }
     if (item === 'Colher') {
         try {
-            const retornos = await CarregarColher(pedidoId);
+            const retornos = await CarregarColher(pedidoId, itemIdlinha);
 
             retornos.forEach(detalhe => {
                 conteudoHTML += `
                     <div class="item-detalhe">
                         <p><strong>Casca 1:</strong> ${detalhe.casca1} (${detalhe.tpChocolate1})</p>
                         <p><strong>Casca 2:</strong> ${detalhe.casca2} (${detalhe.tpChocolate2})</p>
+                        <p><strong>Peso:</strong> ${detalhe.observacao}g</p>
                         <p><strong>Peso:</strong> ${detalhe.peso}g</p>
                         <p><strong>Status:</strong> ${detalhe.status}</p>
                     </div>

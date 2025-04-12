@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
         data["data"] = document.querySelector('input[name="data"]').value;
         data["qtd"] = parseInt(document.querySelector('input[name="qtd"]').value); 
         data["valor"] = document.querySelector('input[name="valor"]').value;
-        data["observacao"] = document.querySelector('input[name="observacao"]').value;
 
         // Cria o array de produtos com base na quantidade
         let produtos = [];
@@ -27,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
             data["produto"] = document.querySelector(`select[name="produto_${cont}"]`).value;
 
             var produto = {
-                produto: data["produto"],  // Tipo de produto (igual para todos os produtos aqui)
+                produto: data["produto"],  
             };
 
             console.log(produto)
@@ -39,7 +38,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 produto.tipo_chocolate_1 = document.querySelector(`select[name="tipo-chocolate-${cont}"]`).value;
                 produto.casca_2 = document.querySelector(`input[name="casca_${cont+1}"]`).value;
                 produto.tipo_chocolate_2 = document.querySelector(`select[name="tipo-chocolate-${cont+1}"]`).value;
+                produto.observacao = document.querySelector(`input[name="observacao-${cont}"]`).value;
                 produto.peso = document.querySelector(`select[name="peso-${cont}"]`).value;
+                
 
             }
             else if (data["produto"] === "Tradicional recheado") {
@@ -49,13 +50,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 produto.casca_2 = document.querySelector(`input[name="casca_${cont+1}"]`).value;
                 produto.recheio_2 = document.querySelector(`input[name="recheio_${cont+1}"]`).value;
                 produto.tipo_chocolate_2 = document.querySelector(`select[name="tipo-chocolate-${cont+1}"]`).value;
+                produto.observacao = document.querySelector(`input[name="observacao-${cont}"]`).value;
                 produto.peso = document.querySelector(`select[name="peso-${cont}"]`).value;
+                
             }
             else if (data["produto"] === "Colher") {
                 produto.casca_1 = document.querySelector(`input[name="casca_${cont}"]`).value;
                 produto.recheio_1 = document.querySelector(`input[name="recheio_${cont}"]`).value;
                 produto.tipo_chocolate_1 = document.querySelector(`select[name="tipo-chocolate-${cont}"]`).value;
+                produto.observacao = document.querySelector(`input[name="observacao-${cont}"]`).value;
                 produto.peso = document.querySelector(`select[name="peso-${cont}"]`).value;
+                
             }
             else if (data["produto"] === "Caixa de bombom") {
 
@@ -64,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (produto.tpBombom === "Maciço"){
 
                         produto.tpRecheio = document.querySelector(`select[name="conteudo-bombom-${cont}"]`).value;
+                        produto.observacao = document.querySelector(`input[name="observacao-${cont}"]`).value;
                         produto.peso = document.querySelector(`select[name="peso-${cont}"]`).value;
                         produto.sabor = "nulo";
                         produto.Recheio = "nulo"
@@ -71,14 +77,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         if (produto.tpRecheio === "Especifico"){
                             produto.sabor = document.querySelector(`select[name="tipo-sabor-bombom-${cont}"]`).value;
+                            produto.observacao = document.querySelector(`input[name="observacao-${cont}"]`).value;
                             produto.peso = document.querySelector(`select[name="peso-${cont}"]`).value;
+                            
                         }
                         
                         
                     }else if (produto.tpBombom === "Recheado"){
 
                         produto.Recheio = document.querySelector(`input[name="recheio_${cont}"]`).value;
-                        produto.peso = document.querySelector(`select[name="peso-${cont}"]`).value;
+                        produto.observacao = document.querySelector(`input[name="observacao-${cont}"]`).value;
+                        produto.peso = document.querySelector(`select[name="peso-${cont}"]`).value; 
                         produto.sabor = "nulo";
                         produto.tpRecheio = "nulo";
                     } 
