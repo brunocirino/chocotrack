@@ -353,6 +353,48 @@ class PedidoModel {
         return $stmt->fetchColumn() ?: "Não encontrado";
     }
 
+    public function excluirPedido($id_identificador) {
+        try {
+            $this->banco->beginTransaction();
+    
+            // Tabelas com suas respectivas colunas de relacionamento
+            $tabelas = [
+                'ovosrecheados' => 'id_pedido',
+                'caixabombom' => 'id_pedido',
+                'ovoscolher' => 'id_pedido',
+                'ovostradicionais' => 'id_pedido',
+                'pedido' => 'id_identificador'
+            ];
+    
+            foreach ($tabelas as $tabela => $coluna) {
+                $sql = "DELETE FROM $tabela WHERE $coluna = ?";
+                $stmt = $this->banco->prepare($sql);
+    
+                if (!$stmt->execute([$id_identificador])) {
+                    $this->banco->rollBack();
+                    echo json_encode(["success" => false, "error" => "Erro ao excluir registros."]);
+                    exit; // Evita que mais dados sejam enviados
+                }
+            }
+    
+            $this->banco->commit();
+            echo json_encode(["success" => true, "message" => "Pedido excluído com sucesso!"]);
+            exit; // Evita que mais dados sejam enviados
+    
+        } catch (PDOException $e) {
+            $this->banco->rollBack();
+            echo json_encode([
+                "success" => false,
+                "error" => "Erro ao excluir: " . $e->getMessage()
+            ]);
+            exit; // Evita que mais dados sejam enviados
+        }
+    }
+    
+    
+    
+    
+
 
     
 }

@@ -185,19 +185,15 @@ body {
 }
 
 button {
-    background-color: #4caf50;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 3px 4px;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 20px;
     font-size: 16px;
 }
 
-button:hover {
-    background-color: #45a049;
-}
 
 
 

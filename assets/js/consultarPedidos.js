@@ -1,3 +1,5 @@
+import { mostrarNotificacao } from '../js/Notificacao.js';
+
 const pedidos = [];
 
 function adicionarPedido(id, nome, telefone, data, valor, observacao, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso, 
@@ -273,18 +275,62 @@ function gerarCard(pedido) {
 
     return `
         <div class="card" data-pedido-id="${normalizedPedido.id}">
-            <h4>Pedido #${normalizedPedido.id}</h4>
+            <div class="card-header">
+                <h4>Pedido #${normalizedPedido.id}</h4>
+                <button class="btn-excluir" onclick="confirmarExclusao(${normalizedPedido.id})" title="Excluir pedido">
+                    <img src="../assets/img/excluir.png" alt="Excluir" class="icone-lixeira">
+                </button>
+            </div>
             <p>Nome: ${normalizedPedido.nome}</p>
             <p>Telefone: ${normalizedPedido.telefone}</p>
             <p>Data: ${normalizedPedido.data}</p>
             <p>Valor: ${Number(normalizedPedido.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
             <ul class="itens-pedido">
-
-                ${listaItens}  
+                ${listaItens}
             </ul>
         </div>
     `;
 }
+
+function confirmarExclusao(id) {
+    if (confirm("Tem certeza que deseja excluir o pedido #" + id + "?")) {
+        excluirPedido(id); // aqui você chama sua função de exclusão real
+    }
+}
+
+function excluirPedido(id_identificador) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../controller/Excluir_pedidos.php',
+            method: 'GET',
+            data: { id: id_identificador },
+            success: function(response) {
+                console.log('Resposta bruta:', response);
+
+                // A resposta já é um objeto JavaScript, não é necessário usar JSON.parse
+                if (response.success) {
+                    mostrarNotificacao("Pedido excluído com sucesso!", "success");
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                    resolve(response);
+                } else {
+                    mostrarNotificacao(response.error || "Erro ao excluir o pedido.", "error");
+                    reject(response.error || "Erro ao excluir o pedido.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro na requisição AJAX:', error);
+                console.error('Resposta do servidor:', xhr.responseText);
+                mostrarNotificacao("Erro na requisição. Verifique o console.", "error");
+                reject('Erro na requisição AJAX: ' + error);
+            }
+        });
+    });
+}
+
+
+
 
 // Função para controlar o clique no item
 function handleItemClick(event, pedidoId, item, liElement) {
@@ -364,7 +410,7 @@ async function openModal(pedidoId, item, element) {
                     <div class="item-detalhe">
                         <p><strong>Casca 1:</strong> ${detalhe.casca1} (${detalhe.tpChocolate1})</p>
                         <p><strong>Casca 2:</strong> ${detalhe.casca2} (${detalhe.tpChocolate2})</p>
-                        <p><strong>Peso:</strong> ${detalhe.observacao}g</p>
+                        <p><strong>Observação:</strong> ${detalhe.observacao}</p>
                         <p><strong>Peso:</strong> ${detalhe.peso}g</p>
                         <p><strong>Status:</strong> ${detalhe.status}</p>
                     </div>
@@ -385,7 +431,7 @@ async function openModal(pedidoId, item, element) {
                     <div class="item-detalhe">
                         <p><strong>Casca 1:</strong> ${detalhe.casca1} (${detalhe.tpchocolate1}) (${detalhe.recheio1})</p>
                         <p><strong>Casca 2:</strong> ${detalhe.casca2} (${detalhe.tpchocolate2}) (${detalhe.recheio2})</p>
-                        <p><strong>Peso:</strong> ${detalhe.observacao}g</p>
+                        <p><strong>Observação:</strong> ${detalhe.observacao}</p>
                         <p><strong>Peso:</strong> ${detalhe.peso}g</p>
                         <p><strong>Status:</strong> ${detalhe.status}</p>
                     </div>
@@ -406,7 +452,7 @@ async function openModal(pedidoId, item, element) {
                     <div class="item-detalhe">
                         <p><strong>Tipo Bombom:</strong> ${detalhe.tpBombom}</p>
                         <p><strong>Tipo Recheio:</strong> ${detalhe.tpRecheio}</p>
-                        <p><strong>Peso:</strong> ${detalhe.observacao}g</p>
+                        <p><strong>Observação:</strong> ${detalhe.observacao}</p>
                         <p><strong>Peso:</strong> ${detalhe.peso}g</p>
                         <p><strong>Status:</strong> ${detalhe.status}</p>
                     </div>
@@ -427,7 +473,7 @@ async function openModal(pedidoId, item, element) {
                     <div class="item-detalhe">
                         <p><strong>Casca 1:</strong> ${detalhe.casca1} (${detalhe.tpChocolate1})</p>
                         <p><strong>Casca 2:</strong> ${detalhe.casca2} (${detalhe.tpChocolate2})</p>
-                        <p><strong>Peso:</strong> ${detalhe.observacao}g</p>
+                        <p><strong>Observação:</strong> ${detalhe.observacao}</p>
                         <p><strong>Peso:</strong> ${detalhe.peso}g</p>
                         <p><strong>Status:</strong> ${detalhe.status}</p>
                     </div>
@@ -504,3 +550,9 @@ function CarregarPedidos() {
 window.addEventListener("load", function() {
     CarregarPedidos();
 });
+
+window.confirmarExclusao = confirmarExclusao;
+window.handleItemClick = handleItemClick;
+window.closeModal = closeModal;
+window.toggleCheck = toggleCheck;
+window.atualizarStatus = atualizarStatus;

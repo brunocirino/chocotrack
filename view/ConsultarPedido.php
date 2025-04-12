@@ -76,6 +76,7 @@
     <!-- Modal -->
     <div class="modal" id="modal-pedido">
         <div class="modal-conteudo">
+            <button class="Editar-modal" onclick="EditarItem()">Editar</button>
             <button class="fechar-modal" onclick="closeModal()">×</button>
             <h2>Itens do Pedido</h2>
             <div id="itens-pedido">
@@ -84,9 +85,14 @@
         </div>
     </div>
 
+    <div id="notificacao" class="notificacao escondido">
+        <span id="notificacao-icone"></span>
+        <span id="notificacao-mensagem"></span>
+    </div>
+
 
     <script src="../assets/js/menulateral.js"></script>
-    <script src="../assets/js/consultarPedidos.js"></script>
+    <script src="../assets/js/consultarPedidos.js" type="module"></script>
     <script src="../assets/js/FiltroPedidos.js"></script>
     
 </body>
