@@ -158,7 +158,7 @@ function LogicaCampos(index) {
                     <option value="250">250g</option>    
                     <option value="350">350g</option>  
                     <option value="400">400g</option>   
-                    <option value="500">500</option>   
+                    <option value="500">500g</option>   
                     <option value="750">750g</option> 
                     <option value="1kg">1kg</option>                                                             
                 </select>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/MenuLateral.css">
     <link rel="stylesheet" href="../assets/css/ConsultarPedido.css">
+    <link rel="stylesheet" href="../assets/css/notificacao.css">
     <link rel="stylesheet" href="../assets/css/cards.css">
     <title>ChocoTrack - Consultar pedido</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -59,8 +60,8 @@
 
     <div id="filtros">
     <select id="tipoFiltro">
+        <option value="pedido">ID do Pedido</option>
         <option value="nome">Nome do Cliente</option>
-        <option value="pedido">Número do Pedido</option>
         <option value="telefone">Telefone</option>
         <option value="data">Data do Pedido</option>
     </select>

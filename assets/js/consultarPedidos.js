@@ -2,7 +2,7 @@ import { mostrarNotificacao } from '../js/Notificacao.js';
 
 const pedidos = [];
 
-function adicionarPedido(id, nome, telefone, data, valor, observacao, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso, 
+function adicionarPedido(id, nome, telefone, data, valor, tipoPedido, observacao, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso, 
     status_ovostradicionais, status_ovosrecheados, status_caixabombom, status_ovoscolher) {
 // Adiciona o pedido ao array de pedidos com todos os status
 pedidos.push({ 
@@ -11,6 +11,7 @@ nome,
 telefone,
 data,
 valor,
+tipoPedido,
 observacao,
 itens, 
 id_ovostradicionais, 
@@ -33,6 +34,7 @@ nome,
 telefone,
 data,
 valor,
+tipoPedido,
 observacao,
 itens, 
 id_ovostradicionais, 
@@ -243,14 +245,6 @@ function gerarCard(pedido) {
         const data = itemData[item] || { ids: [], status: [] };
         const itemId = data.ids[contadores[item]] || null;
         const itemStatus = (data.status[contadores[item]] || 'Pendente').trim();
-        
-        // Log para depuração
-        console.log(`Item: ${item}`, {
-            id: itemId,
-            status: itemStatus,
-            idsDisponiveis: data.ids,
-            statusDisponiveis: data.status
-        });
 
         contadores[item]++;
 
@@ -277,6 +271,7 @@ function gerarCard(pedido) {
         <div class="card" data-pedido-id="${normalizedPedido.id}">
             <div class="card-header">
                 <h4>Pedido #${normalizedPedido.id}</h4>
+                <span class="tag-pedido">${normalizedPedido.tipoPedido}</span>
                 <button class="btn-excluir" onclick="confirmarExclusao(${normalizedPedido.id})" title="Excluir pedido">
                     <img src="../assets/img/excluir.png" alt="Excluir" class="icone-lixeira">
                 </button>
@@ -328,6 +323,7 @@ function excluirPedido(id_identificador) {
         });
     });
 }
+
 
 
 
@@ -471,8 +467,8 @@ async function openModal(pedidoId, item, element) {
             retornos.forEach(detalhe => {
                 conteudoHTML += `
                     <div class="item-detalhe">
-                        <p><strong>Casca 1:</strong> ${detalhe.casca1} (${detalhe.tpChocolate1})</p>
-                        <p><strong>Casca 2:</strong> ${detalhe.casca2} (${detalhe.tpChocolate2})</p>
+                        <p><strong>Casca:</strong> ${detalhe.casca1} (${detalhe.tpchocolate1})</p>
+                        <p><strong>Recheio:</strong> ${detalhe.recheio1}</p>
                         <p><strong>Observação:</strong> ${detalhe.observacao}</p>
                         <p><strong>Peso:</strong> ${detalhe.peso}g</p>
                         <p><strong>Status:</strong> ${detalhe.status}</p>
@@ -520,7 +516,9 @@ function CarregarPedidos() {
                         pedido.telefone,
                         pedido.data,
                         pedido.valor,
+                        pedido.tipoPedido,
                         pedido.observacao,
+                        
                         pedido.itens, 
                         pedido.id_ovostradicionais, 
                         pedido.id_ovosrecheados, 

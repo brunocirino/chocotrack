@@ -82,6 +82,13 @@
                     <input type="number" step="0.01" id="valor" name="valor" required placeholder=" "/>
                     <label>Valor</label>
                 </div>
+                <div class="box-user">
+                    <select id="tipo-pedido" name="tipo-pedido">
+                        <option value="" disabled selected>Selecione o tipo do pedido</option>
+                        <option value="Normal">Venda comum</option>  
+                        <option value="Rifa">Rifa</option>                                                              
+                    </select>
+                </div>
                 <div class="produtos-1-campos">
                     <h3>Produto 1</h3>
                     <!-- Seletor de Produto -->
@@ -97,6 +104,15 @@
 
                     <!-- Campos Dinâmicos -->
                     <div id="campos-dinamicos-0"></div>
+
+                    <div class="controle-botoes">
+                        <button type="button" class="btn-remove" data-index="1">-</button>
+                        <span class="contador" data-index="1">0</span>
+                        <button type="button" class="btn-add" data-index="1">+</button>
+                    </div>
+
+
+
 
                     <!-- Divisória entre os produtos -->
                     <hr class="divisoria-produto">

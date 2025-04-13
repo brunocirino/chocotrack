@@ -38,6 +38,12 @@ function atualizarCampos() {
                     <!-- Campos Dinâmicos -->
                     <div id="campos-dinamicos-${cont}"></div>
 
+                     <div class="controle-botoes">
+                        <button type="button" class="btn-remove" data-index="${cont}">-</button>
+                        <span class="contador" data-index="${cont}">0</span>
+                        <button type="button" class="btn-add" data-index="${cont}">+</button>
+                    </div>
+
                     <!-- Divisória entre os produtos -->
                     <hr class="divisoria-produto">
                 `;

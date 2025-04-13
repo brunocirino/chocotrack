@@ -23,3 +23,11 @@ document.getElementById("btnFiltrar").addEventListener("click", function () {
         card.style.display = exibir ? "block" : "none";
     });
 });
+
+document.getElementById("valorFiltro").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // evita comportamentos inesperados
+        document.getElementById("btnFiltrar").click(); // dispara o clique no botão
+    }
+});
+

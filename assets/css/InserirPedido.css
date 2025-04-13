@@ -272,3 +272,28 @@ select {
     background-color: #fff;
     padding: 0 5px;
 }
+
+/* estilos.css */
+
+.controle-botoes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .botao-mini {
+    padding: 5px 10px;
+    font-size: 16px;
+    border: none;
+    background-color: #6c829d;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .botao-mini:hover {
+    background-color: #5a6f8b;
+  }
+  

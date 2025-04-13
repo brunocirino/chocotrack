@@ -366,4 +366,16 @@ select {
     transition: filter 0.3s ease;
 }
 
+.tag-pedido {
+    display: inline-block;
+    background-color: #e0f0ff;
+    color: #007bff;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
 
