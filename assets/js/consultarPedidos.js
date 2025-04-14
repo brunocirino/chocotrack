@@ -1,5 +1,6 @@
 import { mostrarNotificacao } from '../js/Notificacao.js';
 
+
 const pedidos = [];
 
 function adicionarPedido(id, nome, telefone, data, valor, tipoPedido, observacao, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso, 
@@ -272,8 +273,19 @@ function gerarCard(pedido) {
             <div class="card-header">
                 <h4>Pedido #${normalizedPedido.id}</h4>
                 <span class="tag-pedido">${normalizedPedido.tipoPedido}</span>
+                <button class="btn-editar" 
+                    onclick="EditarPedido(
+                        '${normalizedPedido.id}',
+                        '${normalizedPedido.id_ovostradicionais.join(',')}',
+                        '${normalizedPedido.id_ovosrecheados.join(',')}',
+                        '${normalizedPedido.id_ovoscolher.join(',')}',
+                        '${normalizedPedido.id_caixabombom.join(',')}'
+                    )" 
+                    title="Editar pedido">
+                <img src="../assets/img/editar.png" alt="Editar" class="icone-Editar">
+            </button>
                 <button class="btn-excluir" onclick="confirmarExclusao(${normalizedPedido.id})" title="Excluir pedido">
-                    <img src="../assets/img/excluir.png" alt="Excluir" class="icone-lixeira">
+                    <img src="../assets/img/excluir.png" alt="Excluir" class="icone-Editar">
                 </button>
             </div>
             <p>Nome: ${normalizedPedido.nome}</p>

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../assets/css/ConsultarPedido.css">
     <link rel="stylesheet" href="../assets/css/notificacao.css">
     <link rel="stylesheet" href="../assets/css/cards.css">
+    <link rel="stylesheet" href="../assets/css/Modal-Editar.css">
     <title>ChocoTrack - Consultar pedido</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -86,15 +87,27 @@
         </div>
     </div>
 
+    <!-- Modal editar -->
+    <div class="modal-overlay"></div>
+    <div class="modal-edit-pedido">
+        <button class="close-modal">&times;</button>
+        <div class="modal-content">
+            <div class="conteudo-fixo"></div>
+            <div class="conteudo-itens"></div>
+        </div>
+    </div>
+
     <div id="notificacao" class="notificacao escondido">
         <span id="notificacao-icone"></span>
         <span id="notificacao-mensagem"></span>
     </div>
 
 
+    <script src="../assets/js/EditarPedido.js"></script>
     <script src="../assets/js/menulateral.js"></script>
-    <script src="../assets/js/consultarPedidos.js" type="module"></script>
+    <script type="module" src="../assets/js/consultarPedidos.js" type="module"></script>
     <script src="../assets/js/FiltroPedidos.js"></script>
+    
     
 </body>
 </html>

@@ -1,0 +1,155 @@
+/* Modal Centralizado - Estilo Quadrado */
+.modal-edit-pedido {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    z-index: 1050;
+    display: none;
+    overflow: hidden; /* Mudado de overflow-y: auto para hidden */
+    font-family: Arial, sans-serif;
+}
+
+.modal-edit-pedido.show {
+    display: block;
+}
+
+.modal-content {
+    padding: 50px 30px 30px; /* Aumentado o padding-top para o X */
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto; /* Agora o conteúdo interno que rola */
+    max-height: calc(80vh - 60px); /* Ajuste para o espaço do cabeçalho */
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #555;
+    z-index: 3; /* Garante que fique acima de tudo */
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1040;
+    display: none;
+}
+
+.modal-active .modal-overlay {
+    display: block;
+}
+
+/* Estilo do conteúdo conforme a imagem */
+.conteudo-fixo {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.conteudo-fixo p {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.conteudo-itens h3 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Estilo dos itens */
+.item-container {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border-left: 4px solid #894818;
+}
+
+.item-container h5 {
+    margin: 0 0 10px 0;
+    color: #894818;
+    font-size: 16px;
+}
+
+.detalhe-item {
+    margin-bottom: 8px;
+}
+
+.detalhe-item p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Campos editáveis */
+.editable {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    background: white;
+    font-size: 14px;
+}
+
+select.editable {
+    padding: 8px;
+    height: 36px;
+}
+
+/* Botão Salvar */
+.btn-salvar {
+    background: #894818;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+.btn-salvar:hover {
+    background: #6d3612;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .modal-edit-pedido {
+        width: 95%;
+        max-height: 90vh;
+    }
+    .modal-content {
+        padding: 20px;
+    }
+}

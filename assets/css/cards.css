@@ -197,10 +197,13 @@ button {
 
 
 
-/* Responsividade para telas pequenas */
+
 @media screen and (max-width: 768px) {
     :root {
-        --card-width: 60%; /* A largura dos cards será 100% para telas pequenas */
+        --card-width: 60%;
+        .btn-editar img{
+            margin-left: 0%;
+        }
     }
 
     .card {
@@ -215,10 +218,44 @@ button {
 
 @media screen and (max-width: 480px) {
     :root {
-        --card-width: 70%; /* Ajuste para telas ainda menores */
+        --card-width: 70%; 
+        .btn-editar img{
+            margin-left: 0%;
+        }
     }
 
     .card {
         width: var(--card-width);
     }
+}
+
+
+.btn-editar {
+    
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    box-shadow: none;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-editar:hover,
+.btn-editar:focus {
+    background-color: transparent;
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-editar img {
+    margin-left: 760%;
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    transition: filter 0.3s ease;
+    display: block;
 }

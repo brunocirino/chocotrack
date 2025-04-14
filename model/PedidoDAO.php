@@ -225,7 +225,7 @@ class PedidoModel {
     }
 
     public function consultarPedido($id_identificador){
-        $sql = "SELECT * FROM pedido WHERE id_identificador = ?";
+        $sql = "SELECT nome, telefone, data, valor, tipoPedido FROM pedido WHERE id_identificador = ? GROUP BY id_identificador;";
         $stmt = $this->banco->prepare($sql);
 
         if ($stmt->execute([$id_identificador])){
@@ -235,6 +235,19 @@ class PedidoModel {
 
         return false;
     }
+
+    public function consultarPedidoItem($id_identificador){
+        $sql = "SELECT item  FROM pedido WHERE id_identificador = ?";
+        $stmt = $this->banco->prepare($sql);
+
+        if ($stmt->execute([$id_identificador])){
+            $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $resultado;
+        }
+
+        return false;
+    }
+
 
     public function buscarBombons($id_identificador, $id_linha){
         $sql = "SELECT * FROM caixabombom WHERE id_pedido = ? AND id = ?";
