@@ -1,33 +1,58 @@
-document.getElementById("btnFiltrar").addEventListener("click", function () {
-    const tipoFiltro = document.getElementById("tipoFiltro").value;
-    const valorFiltro = document.getElementById("valorFiltro").value.toLowerCase().trim();
-    const pedidos = document.querySelectorAll(".conteudo .card");
+export function configurarFiltro(paginacao) {
+    const btnFiltrar = document.getElementById("btnFiltrar");
+    const valorFiltro = document.getElementById("valorFiltro");
+    
+    if (!btnFiltrar || !valorFiltro) return;
 
-    pedidos.forEach(card => {
-        let exibir = false;
+    // Armazena todos os pedidos originais
+    let todosPedidos = [];
 
-        if (tipoFiltro === "nome") {
-            const nomeCliente = card.querySelector("p").innerText.toLowerCase();
-            exibir = nomeCliente.includes(valorFiltro);
-        } else if (tipoFiltro === "pedido") {
-            const numeroPedido = card.querySelector("h4").innerText.toLowerCase();
-            exibir = numeroPedido.includes(valorFiltro);
-        } else if (tipoFiltro === "telefone") {
-            const telefoneCliente = card.querySelector("p:nth-of-type(2)").innerText.toLowerCase();
-            exibir = telefoneCliente.includes(valorFiltro);
-        } else if (tipoFiltro === "data") {
-            const dataPedido = card.querySelector("p:nth-of-type(3)").innerText.toLowerCase();
-            exibir = dataPedido.includes(valorFiltro);
+    // Função para aplicar o filtro
+    function aplicarFiltro() {
+        const tipoFiltro = document.getElementById("tipoFiltro").value;
+        const valor = valorFiltro.value.toLowerCase().trim();
+
+        // Se o campo estiver vazio, mostra todos os pedidos
+        if (!valor) {
+            paginacao.atualizarDados(todosPedidos);
+            return;
         }
 
-        card.style.display = exibir ? "block" : "none";
-    });
-});
+        // Filtra os pedidos
+        const pedidosFiltrados = todosPedidos.filter(pedido => {
+            switch (tipoFiltro) {
+                case "nome":
+                    return pedido.nome.toLowerCase().includes(valor);
+                case "pedido":
+                    return pedido.id.toString().includes(valor);
+                case "telefone":
+                    return pedido.telefone.includes(valor);
+                case "data":
+                    return pedido.data.includes(valor);
+                default:
+                    return true;
+            }
+        });
 
-document.getElementById("valorFiltro").addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        event.preventDefault(); // evita comportamentos inesperados
-        document.getElementById("btnFiltrar").click(); // dispara o clique no botão
+        // Atualiza a paginação com os resultados filtrados
+        paginacao.atualizarDados(pedidosFiltrados);
     }
-});
 
+    // Evento do botão filtrar
+    btnFiltrar.addEventListener("click", aplicarFiltro);
+
+    // Evento do Enter no campo de filtro
+    valorFiltro.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            aplicarFiltro();
+        }
+    });
+
+    // Método para atualizar a lista completa de pedidos
+    return {
+        atualizarListaCompleta: function(pedidos) {
+            todosPedidos = pedidos;
+        }
+    };
+}

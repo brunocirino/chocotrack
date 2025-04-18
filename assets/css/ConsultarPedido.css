@@ -401,3 +401,37 @@ select {
 }
 
 
+
+
+.paginacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    gap: 10px;
+}
+
+.paginacao button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #8B4513;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.paginacao button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#paginaAtual {
+    font-weight: bold;
+}
+
+.sem-pedidos {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 1.2em;
+  }

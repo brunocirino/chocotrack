@@ -1,55 +1,13 @@
 import { mostrarNotificacao } from '../js/Notificacao.js';
+import { Paginacao } from '../js/Paginação.js';
+import { configurarFiltro } from '../js/FiltroPedidos.js';
+
+let paginacao;
+
+let gerenciadorFiltro;
 
 
 const pedidos = [];
-
-function adicionarPedido(id, nome, telefone, data, valor, tipoPedido, observacao, itens, id_ovostradicionais, id_ovosrecheados, id_caixabombom, id_ovoscolher, progresso, 
-    status_ovostradicionais, status_ovosrecheados, status_caixabombom, status_ovoscolher) {
-// Adiciona o pedido ao array de pedidos com todos os status
-pedidos.push({ 
-id, 
-nome, 
-telefone,
-data,
-valor,
-tipoPedido,
-observacao,
-itens, 
-id_ovostradicionais, 
-id_ovosrecheados, 
-id_caixabombom, 
-id_ovoscolher, 
-progresso,
-status_ovostradicionais,
-status_ovosrecheados,
-status_caixabombom,
-status_ovoscolher
-});
-
-const listaPedidos = document.getElementById('lista-pedidos');
-
-// Gera o card do pedido passando todos os parâmetros
-const novoPedido = gerarCard({ 
-id, 
-nome, 
-telefone,
-data,
-valor,
-tipoPedido,
-observacao,
-itens, 
-id_ovostradicionais, 
-id_ovosrecheados, 
-id_caixabombom, 
-id_ovoscolher, 
-progresso,
-status_ovostradicionais,
-status_ovosrecheados,
-status_caixabombom,
-status_ovoscolher
-});
-listaPedidos.innerHTML += novoPedido;
-}
 
 
 
@@ -188,7 +146,7 @@ function InsertArray(arrayPedidos) {
 }
 
 
-function gerarCard(pedido) {
+export function gerarCard(pedido) {
     const statusOptions = ['Pendente', 'Em andamento', 'Fabricado', 'Embalado','Concluído'];
 
     // Função para garantir que os dados sejam arrays válidos
@@ -524,33 +482,20 @@ function CarregarPedidos() {
         success: function(response) {
             console.log('Requisição AJAX bem sucedida:', response);
             
-            // Chama a função InsertArray se necessário
-            InsertArray(response);
+            // Inicializa a paginação se ainda não existir
+            if (!paginacao) {
+                paginacao = new Paginacao();
+                gerenciadorFiltro = configurarFiltro(paginacao);
+            }
+            
+            if (gerenciadorFiltro) {
+                gerenciadorFiltro.atualizarListaCompleta(response);
+            }
+            // Atualiza os dados na paginação
+            paginacao.atualizarDados(response);
             
             if (Array.isArray(response) && response.length > 0) {
-                response.forEach(pedido => {
-                    adicionarPedido(
-                        pedido.id, 
-                        pedido.nome, 
-                        pedido.telefone,
-                        pedido.data,
-                        pedido.valor,
-                        pedido.tipoPedido,
-                        pedido.observacao,
-                        
-                        pedido.itens, 
-                        pedido.id_ovostradicionais, 
-                        pedido.id_ovosrecheados, 
-                        pedido.id_caixabombom, 
-                        pedido.id_ovoscolher, 
-                        0,
-                        pedido.status_ovostradicionais,
-                        pedido.status_ovosrecheados,
-                        pedido.status_caixabombom,
-                        pedido.status_ovoscolher
-                    );                });
-
-                console.log('Pedidos carregados:', pedidos);
+                InsertArray(response); // Mantenha isso se for necessário
             } else {
                 console.error('Resposta da API não contém dados válidos:', response);
             }
@@ -563,7 +508,6 @@ function CarregarPedidos() {
 }
 
 
-
 window.addEventListener("load", function() {
     CarregarPedidos();
 });
@@ -573,3 +517,24 @@ window.handleItemClick = handleItemClick;
 window.closeModal = closeModal;
 window.toggleCheck = toggleCheck;
 window.atualizarStatus = atualizarStatus;
+
+// Em consultarPedidos.js ou em um arquivo separado
+window.EditarPedido = function(pedidoId) {
+    // sua implementação
+  };
+  
+  window.confirmarExclusao = function(pedidoId) {
+    // sua implementação
+  };
+  
+  window.atualizarStatus = function(selectElement) {
+    // sua implementação
+  };
+
+  // Debug: verifique se tudo está carregado corretamente
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM carregado');
+    if (typeof gerarCard === 'function') console.log('gerarCard disponível');
+    if (typeof Paginacao === 'function') console.log('Paginacao disponível');
+    if (window.EditarPedido) console.log('EditarPedido disponível');
+  });

@@ -75,6 +75,13 @@
         <!-- Os cards serão inseridos dinamicamente aqui -->
     </div>
 
+    <div id="paginacao" class="paginacao">
+        <button id="paginaAnterior" disabled>Anterior</button>
+        <span id="paginaAtual">Página 1</span>
+        <button id="proximaPagina">Próxima</button>
+    </div>
+
+
     <!-- Modal -->
     <div class="modal" id="modal-pedido">
         <div class="modal-conteudo">
@@ -102,12 +109,18 @@
         <span id="notificacao-mensagem"></span>
     </div>
 
-
-    <script type="module" src="../assets/js/LogicaDeProdutos.js"></script>
-    <script src="../assets/js/EditarPedido.js"></script>
+    <!-- Depois os scripts não-module que não dependem de outros -->
     <script src="../assets/js/menulateral.js"></script>
-    <script type="module" src="../assets/js/consultarPedidos.js" type="module"></script>
-    <script src="../assets/js/FiltroPedidos.js"></script>
+
+    <!-- Em seguida os módulos na ordem de dependência -->
+    <script type="module" src="../assets/js/LogicaDeProdutos.js"></script>
+    <script type="module" src="../assets/js/consultarPedidos.js"></script>
+    <script type="module" src="../assets/js/Paginação.js"></script>
+    <script type="module" src="../assets/js/FiltroPedidos.js"></script>
+
+    <!-- Por último os scripts que dependem dos módulos -->
+    <script src="../assets/js/EditarPedido.js"></script>
+   
     
     
 </body>
