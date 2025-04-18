@@ -241,17 +241,24 @@ function gerarCard(pedido) {
         "Colher": 0
     };
 
+    var cont = 0;
+
     // Gera a lista de itens
     const listaItens = normalizedPedido.itens.map(item => {
         const data = itemData[item] || { ids: [], status: [] };
         const itemId = data.ids[contadores[item]] || null;
         const itemStatus = (data.status[contadores[item]] || 'Pendente').trim();
+        
 
         contadores[item]++;
 
         return `
             <li onclick='handleItemClick(event, ${normalizedPedido.id}, "${item}", this)' data-item-id="${itemId}">
-                <span class="icone-item">⮞</span> ${item}
+                <div class="item-info">
+                    <span class="icone-item">⮞</span>
+                    <span class="numero-item">${++cont}.</span>
+                    <span class="nome-item">${item}</span>
+                </div>
                 <select class="status-select" 
                         data-item-id="${itemId}"
                         data-pedido-id="${normalizedPedido.id}"

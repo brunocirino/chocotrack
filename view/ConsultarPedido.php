@@ -103,6 +103,7 @@
     </div>
 
 
+    <script type="module" src="../assets/js/LogicaDeProdutos.js"></script>
     <script src="../assets/js/EditarPedido.js"></script>
     <script src="../assets/js/menulateral.js"></script>
     <script type="module" src="../assets/js/consultarPedidos.js" type="module"></script>

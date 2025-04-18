@@ -259,3 +259,20 @@ button {
     transition: filter 0.3s ease;
     display: block;
 }
+
+
+.item-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.numero-item {
+    font-weight: bold;
+    width: 20px; /* pra garantir alinhamento */
+    text-align: right;
+}
+
+.nome-item {
+    flex: 1;
+}
