@@ -112,13 +112,6 @@ export class Paginacao {
             }
         });
         
-        // Evento de exclusão
-        configurarEvento('.btn-excluir', 'click', (e) => {
-            const pedidoId = e.currentTarget.closest('.card').dataset.pedidoId;
-            if (typeof window.confirmarExclusao === 'function') {
-                window.confirmarExclusao(pedidoId);
-            }
-        });
         
         // Evento de status
         configurarEvento('.status-select', 'change', (e) => {

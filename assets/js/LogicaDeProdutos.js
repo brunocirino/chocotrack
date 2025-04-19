@@ -1,5 +1,5 @@
-cont = 2
-y = 2
+var cont = 2
+var y = 2
 var contTMP = 0
 
 function LogicaCampos(index) {

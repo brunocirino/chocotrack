@@ -111,15 +111,20 @@
 
     <!-- Depois os scripts não-module que não dependem de outros -->
     <script src="../assets/js/menulateral.js"></script>
+    <script src="../assets/js/BuscarRecheios.js" ></script>
+    <script src="../assets/js/BuscarCascas.js" ></script>
+    <script src="../assets/js/ColhetarEdição.js" ></script>
+    
 
     <!-- Em seguida os módulos na ordem de dependência -->
-    <script type="module" src="../assets/js/LogicaDeProdutos.js"></script>
+    <script src="../assets/js/LogicaDeProdutos.js"></script>
     <script type="module" src="../assets/js/consultarPedidos.js"></script>
     <script type="module" src="../assets/js/Paginação.js"></script>
     <script type="module" src="../assets/js/FiltroPedidos.js"></script>
 
-    <!-- Por último os scripts que dependem dos módulos -->
-    <script src="../assets/js/EditarPedido.js"></script>
+    <script type="module" src="../assets/js/EditarPedido.js"></script>
+
+    
    
     
     

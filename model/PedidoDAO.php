@@ -225,7 +225,7 @@ class PedidoModel {
     }
 
     public function consultarPedido($id_identificador){
-        $sql = "SELECT nome, telefone, data, valor, tipoPedido FROM pedido WHERE id_identificador = ? GROUP BY id_identificador;";
+        $sql = "SELECT id_identificador, nome, telefone, data, valor, tipoPedido FROM pedido WHERE id_identificador = ? GROUP BY id_identificador;";
         $stmt = $this->banco->prepare($sql);
 
         if ($stmt->execute([$id_identificador])){
@@ -405,12 +405,124 @@ class PedidoModel {
             exit; // Evita que mais dados sejam enviados
         }
     }
+    public function ExcluirTradicional($id_linha, $id_identificador) {
+        $this->banco->beginTransaction();
+    
+        try {
+            // Excluir da tabela ovostradicionais
+            $sql = "DELETE FROM ovostradicionais WHERE id = ?";
+            $stmt = $this->banco->prepare($sql);
+            $stmt->execute([$id_linha]);
+    
+            // Excluir 1 linha da tabela pedido com tipo = 'Tradicional'
+            $sqlPedido = "DELETE FROM pedido WHERE id_identificador = ? AND item = ? LIMIT 1";
+            $stmtPedido = $this->banco->prepare($sqlPedido);
+            $stmtPedido->execute([$id_identificador, 'Tradicional']);
+    
+            $this->banco->commit();
+    
+            return [
+                'success' => true,
+                'message' => 'Item e pedido excluídos com sucesso'
+            ];
+    
+        } catch (PDOException $e) {
+            $this->banco->rollBack();
+            error_log("Erro ao excluir tradicional (ID: $id_linha): " . $e->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Erro no banco de dados: ' . $e->getMessage()
+            ];
+        }
+    }
     
     
+    public function ExcluirRecheado($id_linha, $id_identificador) {
+        $this->banco->beginTransaction();
+    
+        try {
+            $sql = "DELETE FROM ovosrecheados WHERE id = ?";
+            $stmt = $this->banco->prepare($sql);
+            $stmt->execute([$id_linha]);
+    
+            $sqlPedido = "DELETE FROM pedido WHERE id_identificador = ? AND item = ? LIMIT 1";
+            $stmtPedido = $this->banco->prepare($sqlPedido);
+            $stmtPedido->execute([$id_identificador, 'Tradicional recheado']);
+    
+            $this->banco->commit();
+    
+            return [
+                'success' => true,
+                'message' => 'Item recheado e pedido excluídos com sucesso'
+            ];
+        } catch (PDOException $e) {
+            $this->banco->rollBack();
+            error_log("Erro ao excluir ovo recheado (ID: $id_linha): " . $e->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Erro no banco de dados: ' . $e->getMessage()
+            ];
+        }
+    }
     
     
-
-
+    public function ExcluirColher($id_linha, $id_identificador) {
+        $this->banco->beginTransaction();
+    
+        try {
+            $sql = "DELETE FROM ovoscolher WHERE id = ?";
+            $stmt = $this->banco->prepare($sql);
+            $stmt->execute([$id_linha]);
+    
+            $sqlPedido = "DELETE FROM pedido WHERE id_identificador = ? AND item = ? LIMIT 1";
+            $stmtPedido = $this->banco->prepare($sqlPedido);
+            $stmtPedido->execute([$id_identificador, 'Colher']);
+    
+            $this->banco->commit();
+    
+            return [
+                'success' => true,
+                'message' => 'Ovo de colher e pedido excluídos com sucesso'
+            ];
+        } catch (PDOException $e) {
+            $this->banco->rollBack();
+            error_log("Erro ao excluir ovo de colher (ID: $id_linha): " . $e->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Erro no banco de dados: ' . $e->getMessage()
+            ];
+        }
+    }
+    
+    
+    public function ExcluirCaixabombom($id_linha, $id_identificador) {
+        $this->banco->beginTransaction();
+    
+        try {
+            $sql = "DELETE FROM caixabombom WHERE id = ?";
+            $stmt = $this->banco->prepare($sql);
+            $stmt->execute([$id_linha]);
+    
+            $sqlPedido = "DELETE FROM pedido WHERE id_identificador = ? AND item = ? LIMIT 1";
+            $stmtPedido = $this->banco->prepare($sqlPedido);
+            $stmtPedido->execute([$id_identificador, 'Caixa de bombom']);
+    
+            $this->banco->commit();
+    
+            return [
+                'success' => true,
+                'message' => 'Caixa de bombom e pedido excluídos com sucesso'
+            ];
+        } catch (PDOException $e) {
+            $this->banco->rollBack();
+            error_log("Erro ao excluir caixa de bombom (ID: $id_linha): " . $e->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Erro no banco de dados: ' . $e->getMessage()
+            ];
+        }
+    }
+    
     
 }
 ?>

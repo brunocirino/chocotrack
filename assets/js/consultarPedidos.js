@@ -518,23 +518,10 @@ window.closeModal = closeModal;
 window.toggleCheck = toggleCheck;
 window.atualizarStatus = atualizarStatus;
 
-// Em consultarPedidos.js ou em um arquivo separado
-window.EditarPedido = function(pedidoId) {
-    // sua implementação
-  };
-  
-  window.confirmarExclusao = function(pedidoId) {
-    // sua implementação
-  };
-  
-  window.atualizarStatus = function(selectElement) {
-    // sua implementação
-  };
 
-  // Debug: verifique se tudo está carregado corretamente
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM carregado');
-    if (typeof gerarCard === 'function') console.log('gerarCard disponível');
-    if (typeof Paginacao === 'function') console.log('Paginacao disponível');
-    if (window.EditarPedido) console.log('EditarPedido disponível');
+    if (typeof gerarCard === 'function') ;
+    if (typeof Paginacao === 'function') ;
+    if (window.EditarPedido);
   });
